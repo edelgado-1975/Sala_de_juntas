@@ -27,14 +27,16 @@
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Sala</label>
                             {{ form.sala }}
-                            {% if form.sala.errors %}<div class="text-danger small">{{ form.sala.errors }}</div>{% endif
-                            %}
+                            {% if form.sala.errors %}
+                            <div class="text-danger small">{{ form.sala.errors }}</div>
+                            {% endif %}
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Número de Asistentes</label>
                             {{ form.num_asistentes }}
-                            {% if form.num_asistentes.errors %}<div class="text-danger small">{{
-                                form.num_asistentes.errors }}</div>{% endif %}
+                            {% if form.num_asistentes.errors %}
+                            <div class="text-danger small">{{ form.num_asistentes.errors }}</div>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -42,29 +44,33 @@
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Fecha Inicio</label>
                             {{ form.fecha_inicio }}
-                            {% if form.fecha_inicio.errors %}<div class="text-danger small">{{ form.fecha_inicio.errors
-                                }}</div>{% endif %}
+                            {% if form.fecha_inicio.errors %}
+                            <div class="text-danger small">{{ form.fecha_inicio.errors }}</div>
+                            {% endif %}
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Fecha Fin</label>
                             {{ form.fecha_fin }}
-                            {% if form.fecha_fin.errors %}<div class="text-danger small">{{ form.fecha_fin.errors }}
-                            </div>{% endif %}
+                            {% if form.fecha_fin.errors %}
+                            <div class="text-danger small">{{ form.fecha_fin.errors }}</div>
+                            {% endif %}
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Propósito</label>
                         {{ form.proposito }}
-                        {% if form.proposito.errors %}<div class="text-danger small">{{ form.proposito.errors }}</div>{%
-                        endif %}
+                        {% if form.proposito.errors %}
+                        <div class="text-danger small">{{ form.proposito.errors }}</div>
+                        {% endif %}
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Descripción</label>
                         {{ form.descripcion }}
-                        {% if form.descripcion.errors %}<div class="text-danger small">{{ form.descripcion.errors }}
-                        </div>{% endif %}
+                        {% if form.descripcion.errors %}
+                        <div class="text-danger small">{{ form.descripcion.errors }}</div>
+                        {% endif %}
                     </div>
 
                     <div class="d-flex justify-content-between mt-4">

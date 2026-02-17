@@ -3,6 +3,7 @@ from django.conf import settings
 from apps.salas.models import Sala
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.utils.timezone import localtime
 
 class Reserva(models.Model):
     """
@@ -97,15 +98,19 @@ class Reserva(models.Model):
             if self.fecha_fin <= self.fecha_inicio:
                 raise ValidationError('La fecha de fin debe ser posterior a la fecha de inicio.')
             
-            # Validar que la reserva no sea en el pasado
-            if self.fecha_inicio < timezone.now():
+            # Validar que la reserva no sea en el pasado (con margen de 5 min para procesamiento)
+            if not self.pk and self.fecha_inicio < (timezone.now() - timezone.timedelta(minutes=5)):
                 raise ValidationError('No se pueden crear reservas en el pasado.')
             
             # Validar que la reserva esté dentro del horario de la sala
             if self.sala:
-                if self.fecha_inicio.time() < self.sala.hora_apertura:
+                # Importante: convertir a hora local antes de comparar con TimeField
+                hora_inicio = localtime(self.fecha_inicio).time()
+                hora_fin = localtime(self.fecha_fin).time()
+                
+                if hora_inicio < self.sala.hora_apertura:
                     raise ValidationError(f'La sala abre a las {self.sala.hora_apertura}.')
-                if self.fecha_fin.time() > self.sala.hora_cierre:
+                if hora_fin > self.sala.hora_cierre:
                     raise ValidationError(f'La sala cierra a las {self.sala.hora_cierre}.')
         
         # Validar capacidad

@@ -19,13 +19,12 @@ def dashboard_view(request):
         if form.is_valid():
             reserva = form.save(commit=False)
             reserva.usuario = request.user
-            reserva.estado = 'CONFIRMADA'  # Por defecto confirmada para agilizar
+            reserva.estado = 'CONFIRMADA'
             try:
                 reserva.save()
                 messages.success(request, 'Reserva creada exitosamente.')
                 return redirect('reservas:dashboard')
             except Exception as e:
-                # Capturar errores de validación del modelo (como conflictos de horario)
                 messages.error(request, f'Error al crear reserva: {str(e)}')
         else:
             messages.error(request, 'Por favor corrige los errores en el formulario.')

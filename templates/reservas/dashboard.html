@@ -276,6 +276,12 @@
             salaFilter.value = "";
             calendar.refetchEvents();
         });
+
+        // Abrir modal automáticamente si hay errores en el formulario
+        {% if form.errors %}
+        var myModal = new bootstrap.Modal(document.getElementById('nuevaReservaModal'));
+        myModal.show();
+        {% endif %}
     });
 </script>
 {% endblock %}
