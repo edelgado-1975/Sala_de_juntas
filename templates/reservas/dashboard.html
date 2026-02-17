@@ -18,9 +18,23 @@
         transition: all 0.3s ease;
     }
 
-    .filter-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    @media (min-width: 992px) {
+        .filter-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    /* Estilos para el calendario en movil */
+    @media (max-width: 768px) {
+        .fc .fc-toolbar {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .fc-header-toolbar {
+            margin-bottom: 1em !important;
+        }
     }
 </style>
 {% endblock %}
@@ -28,26 +42,44 @@
 {% block content %}
 <div class="row">
     <!-- Sidebar de Filtros e Informacion -->
-    <div class="col-lg-3 mb-4">
+    <!-- Boton para abrir filtros en movil -->
+    <div class="col-12 d-lg-none mb-3">
+        <button class="btn btn-outline-sena w-100" type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasFilters">
+            <i class="bi bi-funnel"></i> Ver Filtros e Información
+        </button>
+    </div>
+
+    <!-- Sidebar de Filtros e Informacion (Desktop) -->
+    <div class="col-lg-3 d-none d-lg-block">
         <div class="card shadow-sm mb-4 filter-card">
             <div class="card-header bg-white">
                 <h5 class="mb-0 text-sena"><i class="bi bi-funnel"></i> Filtros</h5>
             </div>
             <div class="card-body">
                 <div class="mb-3">
-                    <label class="form-label">Sala</label>
-                    <select id="salaFilter" class="form-select">
+                    <label class="form-label fw-bold">Sala</label>
+                    <select class="form-select" id="filtroSala">
                         <option value="">Todas las salas</option>
                         {% for sala in salas %}
                         <option value="{{ sala.id }}">{{ sala.nombre }}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <div class="d-grid">
-                    <button class="btn btn-outline-sena" id="btnFiltrar">
-                        Aplicar Filtro
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Estado</label>
+                    <select class="form-select" id="filtroEstado">
+                        <option value="">Todos los estados</option>
+                        <option value="CONFIRMADA">Confirmada</option>
+                        <option value="PENDIENTE">Pendiente</option>
+                        <option value="CANCELADA">Cancelada</option>
+                    </select>
+                </div>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-sena btn-sm" id="btnFiltrar">
+                        <i class="bi bi-search"></i> Filtrar
                     </button>
-                    <button class="btn btn-link text-muted btn-sm mt-2" id="btnLimpiar">
+                    <button class="btn btn-link text-muted btn-sm" id="btnLimpiar">
                         Limpiar filtros
                     </button>
                 </div>
@@ -60,19 +92,19 @@
             </div>
             <div class="card-body">
                 <div class="d-flex align-items-center mb-2">
-                    <div style="width: 15px; height: 15px; background-color: #007bff; border-radius: 3px;" class="me-2">
+                    <div class="rounded-circle me-2" style="width: 15px; height: 15px; background-color: #39A900;">
                     </div>
-                    <small>Mis Reservas</small>
+                    <span>Confirmada</span>
                 </div>
                 <div class="d-flex align-items-center mb-2">
-                    <div style="width: 15px; height: 15px; background-color: #28a745; border-radius: 3px;" class="me-2">
+                    <div class="rounded-circle me-2" style="width: 15px; height: 15px; background-color: #FFC107;">
                     </div>
-                    <small>Confirmadas</small>
+                    <span>Pendiente</span>
                 </div>
-                <div class="d-flex align-items-center mb-2">
-                    <div style="width: 15px; height: 15px; background-color: #ffc107; border-radius: 3px;" class="me-2">
+                <div class="d-flex align-items-center mb-0">
+                    <div class="rounded-circle me-2" style="width: 15px; height: 15px; background-color: #DC3545;">
                     </div>
-                    <small>Pendientes</small>
+                    <span>Cancelada</span>
                 </div>
             </div>
         </div>
@@ -81,6 +113,72 @@
             <button class="btn btn-sena btn-lg shadow-sm" data-bs-toggle="modal" data-bs-target="#nuevaReservaModal">
                 <i class="bi bi-plus-circle"></i> Nueva Reserva
             </button>
+        </div>
+    </div>
+
+    <!-- Offcanvas para Filtros (Movil) -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFilters" aria-labelledby="offcanvasFiltersLabel">
+        <div class="offcanvas-header bg-sena text-white">
+            <h5 class="offcanvas-title" id="offcanvasFiltersLabel">Filtros e Información</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <!-- Mismo contenido que el sidebar de desktop -->
+            <div class="mb-4">
+                <h6 class="fw-bold"><i class="bi bi-funnel"></i> Filtrar Reservas</h6>
+                <div class="mb-3">
+                    <label class="form-label">Sala</label>
+                    <select class="form-select" id="filtroSalaMobile">
+                        <option value="">Todas las salas</option>
+                        {% for sala in salas %}
+                        <option value="{{ sala.id }}">{{ sala.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Estado</label>
+                    <select class="form-select" id="filtroEstadoMobile">
+                        <option value="">Todos los estados</option>
+                        <option value="CONFIRMADA">Confirmada</option>
+                        <option value="PENDIENTE">Pendiente</option>
+                        <option value="CANCELADA">Cancelada</option>
+                    </select>
+                </div>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-sena" id="btnFiltrarMobile">
+                        <i class="bi bi-search"></i> Aplicar Filtros
+                    </button>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="mb-4">
+                <h6 class="fw-bold"><i class="bi bi-info-circle"></i> Convenciones</h6>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="rounded-circle me-2" style="width: 15px; height: 15px; background-color: #39A900;">
+                    </div>
+                    <span>Confirmada</span>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="rounded-circle me-2" style="width: 15px; height: 15px; background-color: #FFC107;">
+                    </div>
+                    <span>Pendiente</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle me-2" style="width: 15px; height: 15px; background-color: #DC3545;">
+                    </div>
+                    <span>Cancelada</span>
+                </div>
+            </div>
+
+            <div class="d-grid">
+                <button class="btn btn-sena btn-lg" data-bs-toggle="modal" data-bs-target="#nuevaReservaModal"
+                    data-bs-dismiss="offcanvas">
+                    <i class="bi bi-plus-circle"></i> Nueva Reserva
+                </button>
+            </div>
         </div>
     </div>
 
@@ -209,15 +307,37 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var calendarEl = document.getElementById('calendar');
-        var salaFilter = document.getElementById('salaFilter');
+
+        // Elementos de filtros (Desktop)
+        var filtroSala = document.getElementById('filtroSala');
+        var filtroEstado = document.getElementById('filtroEstado');
+        var btnFiltrar = document.getElementById('btnFiltrar');
+        var btnLimpiar = document.getElementById('btnLimpiar');
+
+        // Elementos de filtros (Mobile)
+        var filtroSalaMobile = document.getElementById('filtroSalaMobile');
+        var filtroEstadoMobile = document.getElementById('filtroEstadoMobile');
+        var btnFiltrarMobile = document.getElementById('btnFiltrarMobile');
+
+        function getInitialView() {
+            return window.innerWidth < 768 ? 'listWeek' : 'dayGridMonth';
+        }
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
+            initialView: getInitialView(),
             locale: 'es',
+            handleWindowResize: true,
+            windowResize: function (arg) {
+                if (window.innerWidth < 768) {
+                    calendar.changeView('listWeek');
+                } else {
+                    calendar.changeView('dayGridMonth');
+                }
+            },
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                right: 'dayGridMonth,timeGridWeek,listWeek'
             },
             themeSystem: 'bootstrap5',
             navLinks: true,
@@ -227,53 +347,45 @@
                 url: "{% url 'reservas:api_eventos' %}",
                 extraParams: function () {
                     return {
-                        sala_id: salaFilter.value
+                        sala_id: filtroSala.value,
+                        estado: filtroEstado.value
                     };
                 }
             },
             eventClick: function (info) {
-                // Mostrar detalles en modal
                 var props = info.event.extendedProps;
                 document.getElementById('eventoTitulo').textContent = info.event.title;
                 document.getElementById('eventoSala').textContent = props.sala;
                 document.getElementById('eventoUsuario').textContent = props.usuario;
-                document.getElementById('eventoEstado').textContent = props.estado;
-                document.getElementById('eventoDescripcion').textContent = props.descripcion || 'Sin descripcion';
+                document.getElementById('eventoDescripcion').textContent = props.descripcion || 'Sin descripción';
 
-                // Formatear horario
                 var start = info.event.start.toLocaleString();
                 var end = info.event.end ? info.event.end.toLocaleString() : '';
                 document.getElementById('eventoHorario').textContent = start + ' - ' + end;
 
-                var modal = new bootstrap.Modal(document.getElementById('eventoModal'));
+                var estadoEl = document.getElementById('eventoEstado');
+                estadoEl.textContent = props.estado;
+                estadoEl.className = 'badge';
+                if (props.estado === 'PENDIENTE') {
+                    estadoEl.classList.add('bg-warning', 'text-dark');
+                } else if (props.estado === 'CONFIRMADA') {
+                    estadoEl.classList.add('bg-success');
+                } else {
+                    estadoEl.classList.add('bg-secondary');
+                }
 
-                // Configurar botones de accion
                 var btnEditar = document.getElementById('btnEditarReserva');
                 var btnEliminar = document.getElementById('btnEliminarReserva');
                 var btnExportar = document.getElementById('btnExportarReserva');
 
                 var currentUserId = {{ request.user.id }};
-    var isStaff = {{ request.user.is_staff|yesno:"true,false" }};
+                var isStaff = {{ request.user.is_staff|yesno:"true,false" }};
 
-    // Actualizar badge de estado
-    var estadoEl = document.getElementById('eventoEstado');
-    estadoEl.textContent = props.estado;
-    estadoEl.className = 'badge';
-    if (props.estado === 'PENDIENTE') {
-        estadoEl.classList.add('bg-warning', 'text-dark');
-    } else if (props.estado === 'CONFIRMADA') {
-        estadoEl.classList.add('bg-success');
-    } else {
-        estadoEl.classList.add('bg-secondary');
-    }
-
-    // El boton de exportar siempre esta visible para cualquier usuario que pueda ver la reserva
     btnExportar.href = "/reservas/exportar/" + info.event.id + "/";
 
     if (props.usuario_id === currentUserId || isStaff) {
         btnEditar.classList.remove('d-none');
         btnEliminar.classList.remove('d-none');
-        // Actualizar hrefs con el ID de la reserva
         btnEditar.href = "/reservas/editar/" + info.event.id + "/";
         btnEliminar.href = "/reservas/eliminar/" + info.event.id + "/";
     } else {
@@ -281,23 +393,39 @@
         btnEliminar.classList.add('d-none');
     }
 
+    var modal = new bootstrap.Modal(document.getElementById('eventoModal'));
     modal.show();
             }
         });
 
     calendar.render();
 
-    // Filtros
-    document.getElementById('btnFiltrar').addEventListener('click', function () {
+    // Sincronizar filtros Desktop -> Mobile
+    filtroSala.addEventListener('change', function () { filtroSalaMobile.value = this.value; });
+    filtroEstado.addEventListener('change', function () { filtroEstadoMobile.value = this.value; });
+
+    // Sincronizar filtros Mobile -> Desktop
+    filtroSalaMobile.addEventListener('change', function () { filtroSala.value = this.value; });
+    filtroEstadoMobile.addEventListener('change', function () { filtroEstado.value = this.value; });
+
+    function aplicarFiltros() {
+        calendar.refetchEvents();
+    }
+
+    btnFiltrar.addEventListener('click', aplicarFiltros);
+    btnFiltrarMobile.addEventListener('click', function () {
+        aplicarFiltros();
+        bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasFilters')).hide();
+    });
+
+    btnLimpiar.addEventListener('click', function () {
+        filtroSala.value = "";
+        filtroEstado.value = "";
+        filtroSalaMobile.value = "";
+        filtroEstadoMobile.value = "";
         calendar.refetchEvents();
     });
 
-    document.getElementById('btnLimpiar').addEventListener('click', function () {
-        salaFilter.value = "";
-        calendar.refetchEvents();
-    });
-
-    // Abrir modal automaticamente si hay errores en el formulario
     {% if form.errors %}
     var myModal = new bootstrap.Modal(document.getElementById('nuevaReservaModal'));
     myModal.show();

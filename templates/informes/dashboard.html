@@ -1,22 +1,41 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Informes y Estadísticas{% endblock %}
+{% block title %}Informes y Estadisticas{% endblock %}
 
 {% block extra_css %}
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .chart-area,
+    .chart-pie {
+        position: relative;
+        height: 300px;
+        width: 100%;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 <div class="row mb-4">
-    <div class="col-12 d-flex justify-content-between align-items-center">
-        <h2 class="fw-light text-sena border-bottom pb-2 mb-0">
+    <div class="col-12 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+        <h2 class="fw-light text-sena border-bottom pb-2 mb-0 w-100 w-md-auto">
             <i class="bi bi-bar-chart-line"></i> Dashboard de Informes
         </h2>
-        <a href="{% url 'salas:lista' %}" class="btn btn-outline-sena">
-            <i class="bi bi-door-open"></i> Gestionar Salas
-        </a>
+        <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end w-100 w-md-auto">
+            <a href="{% url 'informes:informe_usuario' %}" class="btn btn-primary flex-fill flex-md-grow-0">
+                <i class="bi bi-person-badge"></i> Informe
+            </a>
+            <a href="{% url 'informes:exportar_pdf' %}" class="btn btn-danger flex-fill flex-md-grow-0">
+                <i class="bi bi-file-earmark-pdf"></i> PDF
+            </a>
+            <a href="{% url 'informes:exportar_excel' %}" class="btn btn-success flex-fill flex-md-grow-0">
+                <i class="bi bi-file-earmark-excel"></i> Excel
+            </a>
+            <a href="{% url 'salas:lista' %}" class="btn btn-outline-sena flex-fill flex-md-grow-0">
+                <i class="bi bi-door-open"></i> Salas
+            </a>
+        </div>
     </div>
 </div>
 
@@ -85,11 +104,11 @@
 </div>
 
 <div class="row">
-    <!-- Gráfico de Ocupación por Sala -->
+    <!-- Gráfico de Ocupacion por Sala -->
     <div class="col-lg-8 mb-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 fw-bold text-sena">Ocupación por Sala</h6>
+                <h6 class="m-0 fw-bold text-sena">Ocupacion por Sala</h6>
             </div>
             <div class="card-body">
                 <div class="chart-area">
@@ -118,18 +137,18 @@
 
 {% block extra_js %}
 <script>
-    // Datos para gráficos
+    // Datos para graficos
     var salasData = {
-        labels: [{% for item in reservas_por_sala %}'{{ item.sala__nombre }}', {% endfor %}],
-    data: [{% for item in reservas_por_sala %}{ { item.total } }, {% endfor %}]
+        labels: [{% for item in reservas_por_sala %} "{{ item.sala__nombre }}", {% endfor %}],
+    data: [{% for item in reservas_por_sala %} { { item.total } }, {% endfor %}]
     };
 
     var estadosData = {
-        labels: [{% for item in reservas_por_estado %}'{{ item.estado }}', {% endfor %}],
-    data: [{% for item in reservas_por_estado %}{ { item.total } }, {% endfor %}]
+        labels: [{% for item in reservas_por_estado %} "{{ item.estado }}", {% endfor %}],
+    data: [{% for item in reservas_por_estado %} { { item.total } }, {% endfor %}]
     };
 
-    // Gráfico de Barras (Salas)
+    // Grafico de Barras (Salas)
     var ctxSala = document.getElementById("reservasPorSalaChart");
     var myBarChart = new Chart(ctxSala, {
         type: 'bar',
@@ -137,23 +156,27 @@
             labels: salasData.labels,
             datasets: [{
                 label: "Reservas",
-                backgroundColor: "#FF6000",
-                hoverBackgroundColor: "#CC4D00",
-                borderColor: "#FF6000",
+                backgroundColor: "#39A900",
+                hoverBackgroundColor: "#2d8500",
+                borderColor: "#39A900",
                 data: salasData.data,
             }],
         },
         options: {
             maintainAspectRatio: false,
+            responsive: true,
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
                 }
             }
         }
     });
 
-    // Gráfico de Donut (Estados)
+    // Grafico de Donut (Estados)
     var ctxEstado = document.getElementById("reservasPorEstadoChart");
     var myPieChart = new Chart(ctxEstado, {
         type: 'doughnut',
@@ -168,6 +191,7 @@
         },
         options: {
             maintainAspectRatio: false,
+            responsive: true,
             cutout: '70%',
         }
     });

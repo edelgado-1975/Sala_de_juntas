@@ -109,21 +109,21 @@ python manage.py createsuperuser
 - [x] Exportación a .ics (Google Calendar/Outlook)
 - [x] Código de colores dinámico (Azul, Verde, Amarillo)
 
-### Fase 7: Informes y Reportes (PARCIAL)
+### Fase 7: Informes y Reportes (COMPLETADA)
 - [x] Dashboard de estadísticas
 - [x] Informes de ocupación (Gráficos)
-- [ ] Exportación a PDF de listados
-- [ ] Exportación a Excel
-- [ ] Informe de agendamiento por usuario
+- [x] Exportación a PDF de listados
+- [x] Exportación a Excel
+- [ ] Informe de agendamiento por usuario (En desarrollo)
 
 ### Mantenimiento
 - [ ] Configurar envío de correos reales (SMTP)
 - [ ] Revisar permisos de usuarios (Coordinador vs Instructor)
-- [ ] Implementar registro de usuarios (Auto-registro)
+- [ ] Implementar registro de usuarios (Auto-registro - Pendiente final)
 
 ## 📊 Progreso General
 
-**Completado:** ~90%
+**Completado:** ~93%
 
 - ✅ Planificación: 100%
 - ✅ Configuración Inicial: 100%
@@ -132,7 +132,8 @@ python manage.py createsuperuser
 - ✅ Calendario: 100%
 - ✅ Gestión de Salas: 100%
 - ✅ Reservas (Edición/Cancelación/Exportación): 100%
-- ⏳ Informes (Exportación): 50%
+- ✅ Informes (Dashboard/Exportación): 100%
+- ⏳ Informe Detallado por Usuario: 0%
 - ⏳ Diseño Responsive: 20%
 
 ## 🔗 Recursos
