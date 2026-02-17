@@ -102,27 +102,28 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-## 🔄 Próximos Pasos (Prioridad Alta)
-
-### Fase 6.5: Gestión Avanzada de Reservas (PENDIENTE)
+### Fase 6.5: Gestión Avanzada de Reservas (COMPLETADA)
 - [x] Implementar edición de reservas (Mover de fecha/sala)
 - [x] Implementar cancelación de reservas
 - [x] Validaciones de conflictos en edición
-- [ ] Exportación a .ics (Google Calendar/Outlook)
+- [x] Exportación a .ics (Google Calendar/Outlook)
+- [x] Código de colores dinámico (Azul, Verde, Amarillo)
 
 ### Fase 7: Informes y Reportes (PARCIAL)
 - [x] Dashboard de estadísticas
 - [x] Informes de ocupación (Gráficos)
 - [ ] Exportación a PDF de listados
 - [ ] Exportación a Excel
+- [ ] Informe de agendamiento por usuario
 
 ### Mantenimiento
 - [ ] Configurar envío de correos reales (SMTP)
 - [ ] Revisar permisos de usuarios (Coordinador vs Instructor)
+- [ ] Implementar registro de usuarios (Auto-registro)
 
 ## 📊 Progreso General
 
-**Completado:** ~85%
+**Completado:** ~90%
 
 - ✅ Planificación: 100%
 - ✅ Configuración Inicial: 100%
@@ -130,8 +131,9 @@ python manage.py createsuperuser
 - ✅ Autenticación: 100%
 - ✅ Calendario: 100%
 - ✅ Gestión de Salas: 100%
-- ⏳ Reservas (Edición/Cancelación): 50%
+- ✅ Reservas (Edición/Cancelación/Exportación): 100%
 - ⏳ Informes (Exportación): 50%
+- ⏳ Diseño Responsive: 20%
 
 ## 🔗 Recursos
 

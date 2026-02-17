@@ -1,4 +1,4 @@
-﻿{% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Dashboard - Calendario{% endblock %}
@@ -27,7 +27,7 @@
 
 {% block content %}
 <div class="row">
-    <!-- Sidebar de Filtros e Información -->
+    <!-- Sidebar de Filtros e Informacion -->
     <div class="col-lg-3 mb-4">
         <div class="card shadow-sm mb-4 filter-card">
             <div class="card-header bg-white">
@@ -106,18 +106,21 @@
                 <p><strong>Sala:</strong> <span id="eventoSala"></span></p>
                 <p><strong>Usuario:</strong> <span id="eventoUsuario"></span></p>
                 <p><strong>Horario:</strong> <span id="eventoHorario"></span></p>
-                <p><strong>Estado:</strong> <span id="eventoEstado"></span></p>
+                <p><strong>Estado:</strong> <span id="eventoEstado" class="badge"></span></p>
                 <div class="alert alert-light border" id="eventoDescripcionContainer">
-                    <strong>Descripción:</strong>
+                    <strong>Descripcion:</strong>
                     <p class="mb-0" id="eventoDescripcion"></p>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
                 <div>
-                    <a href="#" id="btnEditarReserva" class="btn btn-primary d-none">
+                    <a href="#" id="btnExportarReserva" class="btn btn-outline-primary mb-1">
+                        <i class="bi bi-calendar-event me-1"></i>Exportar .ics
+                    </a>
+                    <a href="#" id="btnEditarReserva" class="btn btn-primary d-none mb-1">
                         <i class="bi bi-pencil"></i> Editar
                     </a>
-                    <a href="#" id="btnEliminarReserva" class="btn btn-danger d-none">
+                    <a href="#" id="btnEliminarReserva" class="btn btn-danger d-none mb-1">
                         <i class="bi bi-trash"></i> Cancelar
                     </a>
                 </div>
@@ -153,7 +156,7 @@
                             {% endif %}
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Número de Asistentes</label>
+                            <label class="form-label">Numero de Asistentes</label>
                             {{ form.num_asistentes }}
                             {% if form.num_asistentes.errors %}
                             <div class="text-danger small">{{ form.num_asistentes.errors }}</div>
@@ -179,7 +182,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Propósito</label>
+                        <label class="form-label">Proposito</label>
                         {{ form.proposito }}
                         {% if form.proposito.errors %}
                         <div class="text-danger small">{{ form.proposito.errors }}</div>
@@ -187,7 +190,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Descripción (Opcional)</label>
+                        <label class="form-label">Descripcion (Opcional)</label>
                         {{ form.descripcion }}
                     </div>
                 </div>
@@ -235,7 +238,7 @@
                 document.getElementById('eventoSala').textContent = props.sala;
                 document.getElementById('eventoUsuario').textContent = props.usuario;
                 document.getElementById('eventoEstado').textContent = props.estado;
-                document.getElementById('eventoDescripcion').textContent = props.descripcion || 'Sin descripción';
+                document.getElementById('eventoDescripcion').textContent = props.descripcion || 'Sin descripcion';
 
                 // Formatear horario
                 var start = info.event.start.toLocaleString();
@@ -244,44 +247,61 @@
 
                 var modal = new bootstrap.Modal(document.getElementById('eventoModal'));
 
-                // Configurar botones de acción
+                // Configurar botones de accion
                 var btnEditar = document.getElementById('btnEditarReserva');
                 var btnEliminar = document.getElementById('btnEliminarReserva');
+                var btnExportar = document.getElementById('btnExportarReserva');
+
                 var currentUserId = {{ request.user.id }};
-                var isStaff = {{ request.user.is_staff|yesno:"true,false" }};
+    var isStaff = {{ request.user.is_staff|yesno:"true,false" }};
 
-                if (props.usuario_id === currentUserId || isStaff) {
-                    btnEditar.classList.remove('d-none');
-                    btnEliminar.classList.remove('d-none');
-                    // Actualizar hrefs con el ID de la reserva
-                    btnEditar.href = "/reservas/editar/" + info.event.id + "/";
-                    btnEliminar.href = "/reservas/eliminar/" + info.event.id + "/";
-                } else {
-                    btnEditar.classList.add('d-none');
-                    btnEliminar.classList.add('d-none');
-                }
+    // Actualizar badge de estado
+    var estadoEl = document.getElementById('eventoEstado');
+    estadoEl.textContent = props.estado;
+    estadoEl.className = 'badge';
+    if (props.estado === 'PENDIENTE') {
+        estadoEl.classList.add('bg-warning', 'text-dark');
+    } else if (props.estado === 'CONFIRMADA') {
+        estadoEl.classList.add('bg-success');
+    } else {
+        estadoEl.classList.add('bg-secondary');
+    }
 
-                modal.show();
+    // El boton de exportar siempre esta visible para cualquier usuario que pueda ver la reserva
+    btnExportar.href = "/reservas/exportar/" + info.event.id + "/";
+
+    if (props.usuario_id === currentUserId || isStaff) {
+        btnEditar.classList.remove('d-none');
+        btnEliminar.classList.remove('d-none');
+        // Actualizar hrefs con el ID de la reserva
+        btnEditar.href = "/reservas/editar/" + info.event.id + "/";
+        btnEliminar.href = "/reservas/eliminar/" + info.event.id + "/";
+    } else {
+        btnEditar.classList.add('d-none');
+        btnEliminar.classList.add('d-none');
+    }
+
+    modal.show();
             }
         });
 
-        calendar.render();
+    calendar.render();
 
-        // Filtros
-        document.getElementById('btnFiltrar').addEventListener('click', function () {
-            calendar.refetchEvents();
-        });
+    // Filtros
+    document.getElementById('btnFiltrar').addEventListener('click', function () {
+        calendar.refetchEvents();
+    });
 
-        document.getElementById('btnLimpiar').addEventListener('click', function () {
-            salaFilter.value = "";
-            calendar.refetchEvents();
-        });
+    document.getElementById('btnLimpiar').addEventListener('click', function () {
+        salaFilter.value = "";
+        calendar.refetchEvents();
+    });
 
-        // Abrir modal automáticamente si hay errores en el formulario
-        {% if form.errors %}
-        var myModal = new bootstrap.Modal(document.getElementById('nuevaReservaModal'));
-        myModal.show();
-        {% endif %}
+    // Abrir modal automaticamente si hay errores en el formulario
+    {% if form.errors %}
+    var myModal = new bootstrap.Modal(document.getElementById('nuevaReservaModal'));
+    myModal.show();
+    {% endif %}
     });
 </script>
 {% endblock %}

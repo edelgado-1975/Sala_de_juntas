@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.contrib import messages
 from .models import Reserva, Sala
 from .forms import ReservaForm
 from django.utils.timezone import localtime
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from icalendar import Calendar, Event
+import uuid
 
 @login_required
 def dashboard_view(request):
@@ -58,11 +60,12 @@ def reservas_api(request):
         
     eventos = []
     for reserva in reservas:
-        color = '#28a745'  # Verde por defecto (Confirmada)
-        if reserva.estado == 'PENDIENTE':
-            color = '#ffc107'  # Amarillo
-        elif reserva.usuario == request.user:
-            color = '#007bff'  # Azul para mis reservas
+        if reserva.usuario == request.user:
+            color = '#007bff'  # Azul para mis reservas (Prioridad)
+        elif reserva.estado == 'PENDIENTE':
+            color = '#ffc107'  # Amarillo para pendientes de otros
+        else:
+            color = '#28a745'  # Verde para confirmadas de otros
             
         eventos.append({
             'id': reserva.id,
@@ -119,3 +122,43 @@ class ReservaDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, 'Reserva eliminada exitosamente.')
         return super().delete(request, *args, **kwargs)
+
+@login_required
+def exportar_reserva_ics(request, pk):
+    """
+    Genera un archivo .ics para una reserva específica.
+    """
+    reserva = get_object_or_404(Reserva, pk=pk)
+    
+    # Crear el calendario
+    cal = Calendar()
+    cal.add('prodid', '-//SENA//Sistema Sala de Juntas//ES')
+    cal.add('version', '2.0')
+    cal.add('method', 'PUBLISH')
+    
+    # Crear el evento
+    event = Event()
+    event.add('summary', f"Reserva: {reserva.proposito}")
+    event.add('dtstart', reserva.fecha_inicio)
+    event.add('dtend', reserva.fecha_fin)
+    event.add('dtstamp', reserva.fecha_creacion)
+    
+    desc = f"Sala: {reserva.sala.nombre}\n"
+    desc += f"Propósito: {reserva.proposito}\n"
+    if reserva.descripcion:
+        desc += f"Descripción: {reserva.descripcion}\n"
+    desc += f"Organizador: {reserva.usuario.get_full_name()}"
+    
+    event.add('description', desc)
+    event.add('location', reserva.sala.ubicacion)
+    event.add('uid', f"{reserva.id}-{uuid.uuid4()}@sena.edu.co")
+    event.add('status', 'CONFIRMED')
+    
+    # Añadir evento al calendario
+    cal.add_component(event)
+    
+    # Preparar la respuesta
+    response = HttpResponse(cal.to_ical(), content_type="text/calendar")
+    response['Content-Disposition'] = f'attachment; filename="reserva_{reserva.id}.ics"'
+    
+    return response
