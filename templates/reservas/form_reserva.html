@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Reserva{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-lg border-0 rounded-lg mt-3">
+            <div class="card-header bg-sena text-white">
+                <h4 class="mb-0 fw-light">
+                    <i class="bi bi-calendar-check me-2"></i>
+                    Editar Reserva
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Sala</label>
+                            {{ form.sala }}
+                            {% if form.sala.errors %}<div class="text-danger small">{{ form.sala.errors }}</div>{% endif
+                            %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Número de Asistentes</label>
+                            {{ form.num_asistentes }}
+                            {% if form.num_asistentes.errors %}<div class="text-danger small">{{
+                                form.num_asistentes.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Fecha Inicio</label>
+                            {{ form.fecha_inicio }}
+                            {% if form.fecha_inicio.errors %}<div class="text-danger small">{{ form.fecha_inicio.errors
+                                }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Fecha Fin</label>
+                            {{ form.fecha_fin }}
+                            {% if form.fecha_fin.errors %}<div class="text-danger small">{{ form.fecha_fin.errors }}
+                            </div>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Propósito</label>
+                        {{ form.proposito }}
+                        {% if form.proposito.errors %}<div class="text-danger small">{{ form.proposito.errors }}</div>{%
+                        endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Descripción</label>
+                        {{ form.descripcion }}
+                        {% if form.descripcion.errors %}<div class="text-danger small">{{ form.descripcion.errors }}
+                        </div>{% endif %}
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'reservas:dashboard' %}" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-sena">
+                            <i class="bi bi-save me-2"></i>Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

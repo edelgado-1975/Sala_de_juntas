@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% if object %}Editar Sala{% else %}Nueva Sala{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-lg border-0 rounded-lg mt-3">
+            <div class="card-header bg-sena text-white">
+                <h4 class="mb-0 fw-light">
+                    <i class="bi bi-door-open-fill me-2"></i>
+                    {% if object %}Editar Sala: {{ object.nombre }}{% else %}Crear Nueva Sala{% endif %}
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label">Nombre de la Sala</label>
+                            {{ form.nombre }}
+                            {% if form.nombre.errors %}<div class="text-danger small">{{ form.nombre.errors }}</div>{%
+                            endif %}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Capacidad</label>
+                            {{ form.capacidad }}
+                            {% if form.capacidad.errors %}<div class="text-danger small">{{ form.capacidad.errors }}
+                            </div>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Descripción</label>
+                        {{ form.descripcion }}
+                        {% if form.descripcion.errors %}<div class="text-danger small">{{ form.descripcion.errors }}
+                        </div>{% endif %}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Ubicación</label>
+                            {{ form.ubicacion }}
+                            {% if form.ubicacion.errors %}<div class="text-danger small">{{ form.ubicacion.errors }}
+                            </div>{% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Estado</label>
+                            {{ form.estado }}
+                            {% if form.estado.errors %}<div class="text-danger small">{{ form.estado.errors }}</div>{%
+                            endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Equipamiento</label>
+                        {{ form.equipamiento }}
+                        <div class="form-text">Liste el equipamiento disponible separado por comas.</div>
+                        {% if form.equipamiento.errors %}<div class="text-danger small">{{ form.equipamiento.errors }}
+                        </div>{% endif %}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Hora Apertura</label>
+                            {{ form.hora_apertura }}
+                            {% if form.hora_apertura.errors %}<div class="text-danger small">{{
+                                form.hora_apertura.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Hora Cierre</label>
+                            {{ form.hora_cierre }}
+                            {% if form.hora_cierre.errors %}<div class="text-danger small">{{ form.hora_cierre.errors }}
+                            </div>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Imagen</label>
+                        {{ form.imagen }}
+                        {% if form.imagen.errors %}<div class="text-danger small">{{ form.imagen.errors }}</div>{% endif
+                        %}
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        {{ form.activa }}
+                        <label class="form-check-label" for="{{ form.activa.id_for_label }}">Sala Activa</label>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'salas:lista' %}" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-sena">
+                            <i class="bi bi-save me-2"></i>Guardar Sala
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

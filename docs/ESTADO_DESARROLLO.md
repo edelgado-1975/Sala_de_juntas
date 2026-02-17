@@ -102,74 +102,43 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-## 🔄 Próximos Pasos
+## 🔄 Próximos Pasos (Prioridad Alta)
 
-### Fase 4: Sistema de Autenticación (PENDIENTE)
-- [ ] Views de login/logout
-- [ ] Formularios de autenticación
-- [ ] Templates de login
-- [ ] Recuperación de contraseña
-- [ ] Gestión de perfiles
-
-### Fase 5: Interface de Calendario (PENDIENTE)
-- [ ] Integrar FullCalendar.js
-- [ ] Vista de calendario mensual/semanal/diaria
-- [ ] API endpoints para eventos
-- [ ] Modal de creación de reservas
-- [ ] Validación frontend
-
-### Fase 6: Gestión de Reservas (PENDIENTE)
-- [ ] Formularios de reserva
-- [ ] Validación de disponibilidad
+### Fase 6.5: Gestión Avanzada de Reservas (PENDIENTE)
+- [x] Implementar edición de reservas (Mover de fecha/sala)
+- [x] Implementar cancelación de reservas
+- [x] Validaciones de conflictos en edición
 - [ ] Exportación a .ics (Google Calendar/Outlook)
-- [ ] Listado de reservas
-- [ ] Edición y cancelación
 
-### Fase 7: Informes (PENDIENTE)
-- [ ] Dashboard de estadísticas
-- [ ] Informes de ocupación
-- [ ] Exportación a PDF
+### Fase 7: Informes y Reportes (PARCIAL)
+- [x] Dashboard de estadísticas
+- [x] Informes de ocupación (Gráficos)
+- [ ] Exportación a PDF de listados
 - [ ] Exportación a Excel
 
-### Fase 8: Diseño Responsive (PENDIENTE)
-- [ ] CSS principal con colores SENA
-- [ ] Layout responsive
-- [ ] Optimización móvil
-- [ ] Testing en dispositivos
+### Mantenimiento
+- [ ] Configurar envío de correos reales (SMTP)
+- [ ] Revisar permisos de usuarios (Coordinador vs Instructor)
 
 ## 📊 Progreso General
 
-**Completado:** ~30%
+**Completado:** ~85%
 
 - ✅ Planificación: 100%
-- ✅ Configuración Inicial: 90%
+- ✅ Configuración Inicial: 100%
 - ✅ Modelos: 100%
-- ⏳ Autenticación: 0%
-- ⏳ Calendario: 0%
-- ⏳ Reservas: 0%
-- ⏳ Informes: 0%
-- ⏳ Diseño: 0%
+- ✅ Autenticación: 100%
+- ✅ Calendario: 100%
+- ✅ Gestión de Salas: 100%
+- ⏳ Reservas (Edición/Cancelación): 50%
+- ⏳ Informes (Exportación): 50%
 
 ## 🔗 Recursos
 
 - **Repositorio local:** `d:\SalaJuntasCC`
-- **README:** `d:\SalaJuntasCC\README.md`
-- **Documentación:** `d:\SalaJuntasCC\docs\`
-
-## 💡 Notas Importantes
-
-1. **No olvides** activar el entorno virtual antes de trabajar:
-   ```powershell
-   cd d:\SalaJuntasCC
-   venv\Scripts\activate
-   ```
-
-2. **Commits frecuentes** - Usa Git para guardar tu progreso
-
-3. **Prueba regularmente** - Ejecuta `python manage.py runserver` para verificar
-
-4. **Consulta la documentación** si tienes dudas sobre Git o Django
+- **Url Desarrollo:** `http://127.0.0.1:8000/`
+- **Usuarios Prueba:** `Root` (Admin)
 
 ---
 
-**Última actualización:** 2026-02-17
+**Última actualización:** 17 de Febrero de 2026 - Sprint de Mañana Completado

@@ -1,0 +1,281 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - Calendario{% endblock %}
+
+{% block extra_css %}
+<!-- FullCalendar CSS -->
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/locales/es.global.min.js"></script>
+
+<style>
+    .fc-event {
+        cursor: pointer;
+    }
+
+    .filter-card {
+        transition: all 0.3s ease;
+    }
+
+    .filter-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Sidebar de Filtros e Información -->
+    <div class="col-lg-3 mb-4">
+        <div class="card shadow-sm mb-4 filter-card">
+            <div class="card-header bg-white">
+                <h5 class="mb-0 text-sena"><i class="bi bi-funnel"></i> Filtros</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">Sala</label>
+                    <select id="salaFilter" class="form-select">
+                        <option value="">Todas las salas</option>
+                        {% for sala in salas %}
+                        <option value="{{ sala.id }}">{{ sala.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="d-grid">
+                    <button class="btn btn-outline-sena" id="btnFiltrar">
+                        Aplicar Filtro
+                    </button>
+                    <button class="btn btn-link text-muted btn-sm mt-2" id="btnLimpiar">
+                        Limpiar filtros
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0 text-sena"><i class="bi bi-info-circle"></i> Convenciones</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-2">
+                    <div style="width: 15px; height: 15px; background-color: #007bff; border-radius: 3px;" class="me-2">
+                    </div>
+                    <small>Mis Reservas</small>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <div style="width: 15px; height: 15px; background-color: #28a745; border-radius: 3px;" class="me-2">
+                    </div>
+                    <small>Confirmadas</small>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <div style="width: 15px; height: 15px; background-color: #ffc107; border-radius: 3px;" class="me-2">
+                    </div>
+                    <small>Pendientes</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-grid">
+            <button class="btn btn-sena btn-lg shadow-sm" data-bs-toggle="modal" data-bs-target="#nuevaReservaModal">
+                <i class="bi bi-plus-circle"></i> Nueva Reserva
+            </button>
+        </div>
+    </div>
+
+    <!-- Calendario -->
+    <div class="col-lg-9">
+        <div class="card shadow-sm h-100">
+            <div class="card-body p-0">
+                <div id='calendar' class="p-3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Detalles Reserva -->
+<div class="modal fade" id="eventoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-sena text-white">
+                <h5 class="modal-title" id="eventoTitulo">Detalles de la Reserva</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Sala:</strong> <span id="eventoSala"></span></p>
+                <p><strong>Usuario:</strong> <span id="eventoUsuario"></span></p>
+                <p><strong>Horario:</strong> <span id="eventoHorario"></span></p>
+                <p><strong>Estado:</strong> <span id="eventoEstado"></span></p>
+                <div class="alert alert-light border" id="eventoDescripcionContainer">
+                    <strong>Descripción:</strong>
+                    <p class="mb-0" id="eventoDescripcion"></p>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <div>
+                    <a href="#" id="btnEditarReserva" class="btn btn-primary d-none">
+                        <i class="bi bi-pencil"></i> Editar
+                    </a>
+                    <a href="#" id="btnEliminarReserva" class="btn btn-danger d-none">
+                        <i class="bi bi-trash"></i> Cancelar
+                    </a>
+                </div>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nueva Reserva -->
+<div class="modal fade" id="nuevaReservaModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-sena text-white">
+                <h5 class="modal-title">Crear Nueva Reserva</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        Corrija los errores indicados.
+                    </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Sala</label>
+                            {{ form.sala }}
+                            {% if form.sala.errors %}
+                            <div class="text-danger small">{{ form.sala.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Número de Asistentes</label>
+                            {{ form.num_asistentes }}
+                            {% if form.num_asistentes.errors %}
+                            <div class="text-danger small">{{ form.num_asistentes.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Fecha Inicio</label>
+                            {{ form.fecha_inicio }}
+                            {% if form.fecha_inicio.errors %}
+                            <div class="text-danger small">{{ form.fecha_inicio.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Fecha Fin</label>
+                            {{ form.fecha_fin }}
+                            {% if form.fecha_fin.errors %}
+                            <div class="text-danger small">{{ form.fecha_fin.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Propósito</label>
+                        {{ form.proposito }}
+                        {% if form.proposito.errors %}
+                        <div class="text-danger small">{{ form.proposito.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Descripción (Opcional)</label>
+                        {{ form.descripcion }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-sena">Crear Reserva</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        var salaFilter = document.getElementById('salaFilter');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'es',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            themeSystem: 'bootstrap5',
+            navLinks: true,
+            editable: false,
+            dayMaxEvents: true,
+            events: {
+                url: "{% url 'reservas:api_eventos' %}",
+                extraParams: function () {
+                    return {
+                        sala_id: salaFilter.value
+                    };
+                }
+            },
+            eventClick: function (info) {
+                // Mostrar detalles en modal
+                var props = info.event.extendedProps;
+                document.getElementById('eventoTitulo').textContent = info.event.title;
+                document.getElementById('eventoSala').textContent = props.sala;
+                document.getElementById('eventoUsuario').textContent = props.usuario;
+                document.getElementById('eventoEstado').textContent = props.estado;
+                document.getElementById('eventoDescripcion').textContent = props.descripcion || 'Sin descripción';
+
+                // Formatear horario
+                var start = info.event.start.toLocaleString();
+                var end = info.event.end ? info.event.end.toLocaleString() : '';
+                document.getElementById('eventoHorario').textContent = start + ' - ' + end;
+
+                var modal = new bootstrap.Modal(document.getElementById('eventoModal'));
+
+                // Configurar botones de acción
+                var btnEditar = document.getElementById('btnEditarReserva');
+                var btnEliminar = document.getElementById('btnEliminarReserva');
+                var currentUserId = {{ request.user.id }};
+                var isStaff = {{ request.user.is_staff|yesno:"true,false" }};
+
+                if (props.usuario_id === currentUserId || isStaff) {
+                    btnEditar.classList.remove('d-none');
+                    btnEliminar.classList.remove('d-none');
+                    // Actualizar hrefs con el ID de la reserva
+                    btnEditar.href = "/reservas/editar/" + info.event.id + "/";
+                    btnEliminar.href = "/reservas/eliminar/" + info.event.id + "/";
+                } else {
+                    btnEditar.classList.add('d-none');
+                    btnEliminar.classList.add('d-none');
+                }
+
+                modal.show();
+            }
+        });
+
+        calendar.render();
+
+        // Filtros
+        document.getElementById('btnFiltrar').addEventListener('click', function () {
+            calendar.refetchEvents();
+        });
+
+        document.getElementById('btnLimpiar').addEventListener('click', function () {
+            salaFilter.value = "";
+            calendar.refetchEvents();
+        });
+    });
+</script>
+{% endblock %}

@@ -8,8 +8,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', lambda request: redirect('usuarios:login'), name='home'),
     path('usuarios/', include('apps.usuarios.urls')),
-    # path('reservas/', include('apps.reservas.urls')),
-    # path('informes/', include('apps.informes.urls')),
+    path('reservas/', include('apps.reservas.urls')),
+
+    path('informes/', include('apps.informes.urls')),
+    path('salas/', include('apps.salas.urls')),
 ]
 
 # Servir archivos media en desarrollo
