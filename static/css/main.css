@@ -1,0 +1,191 @@
+/* ==========================================
+   SENA Sala de Juntas - Custom Styles
+   ========================================== */
+
+:root {
+    /* Colores SENA */
+    --sena-orange: #FF6000;
+    --sena-orange-light: #FF8C42;
+    --sena-orange-dark: #CC4D00;
+    --sena-green: #39A900;
+    --sena-blue: #004884;
+    
+    /* Grises */
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-700: #495057;
+    --gray-900: #212529;
+}
+
+/* Reset y Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Navbar Personalizada */
+.navbar-dark.bg-sena {
+    background: linear-gradient(135deg, var(--sena-orange) 0%, var(--sena-orange-light) 100%) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    transform: translateY(-2px);
+}
+
+/* Botones */
+.btn-sena {
+    background: linear-gradient(135deg, var(--sena-orange) 0%, var(--sena-orange-light) 100%);
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding: 10px 24px;
+    transition: all 0.3s ease;
+}
+
+.btn-sena:hover {
+    background: linear-gradient(135deg, var(--sena-orange-light) 0%, var(--sena-orange) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 96, 0, 0.3);
+    color: white;
+}
+
+.btn-outline-sena {
+    border: 2px solid var(--sena-orange);
+    color: var(--sena-orange);
+    background: transparent;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-sena:hover {
+    background: var(--sena-orange);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card-header {
+    border-bottom: none;
+    border-radius: 12px 12px 0 0 !important;
+}
+
+/* Badges */
+.badge-sena {
+    background: var(--sena-orange);
+    color: white;
+}
+
+.badge-success {
+    background: var(--sena-green);
+}
+
+/* Alerts */
+.alert {
+    border-radius: 8px;
+    border: none;
+}
+
+/* Forms */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--sena-orange);
+    box-shadow: 0 0 0 0.2rem rgba(255, 96, 0, 0.25);
+}
+
+/* Footer */
+.footer {
+    background-color: var(--gray-100);
+    border-top: 1px solid var(--gray-300);
+}
+
+/* Utility Classes */
+.text-sena {
+    color: var(--sena-orange) !important;
+}
+
+.bg-sena-light {
+    background-color: rgba(255, 96, 0, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar-brand span {
+        font-size: 1rem;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+/* Loading Spinner */
+.spinner-sena {
+    border: 3px solid var(--gray-200);
+    border-top: 3px solid var(--sena-orange);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
