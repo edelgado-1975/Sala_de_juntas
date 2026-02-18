@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse_lazy
-from .forms import LoginForm, PerfilForm
+from .forms import LoginForm, PerfilForm, RegistroUserForm
 
 
 def login_view(request):
@@ -53,3 +53,23 @@ def perfil_view(request):
         form = PerfilForm(instance=request.user)
     
     return render(request, 'usuarios/perfil.html', {'form': form})
+
+
+def registro_view(request):
+    """Vista de registro de nuevos usuarios"""
+    if request.user.is_authenticated:
+        return redirect('reservas:dashboard')
+        
+    if request.method == 'POST':
+        form = RegistroUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Login automatico tras registro
+            messages.success(request, f'¡Registro exitoso! Bienvenido {user.get_full_name()}.')
+            return redirect('reservas:dashboard')
+        else:
+            messages.error(request, 'Por favor, corrija los errores en el formulario.')
+    else:
+        form = RegistroUserForm()
+        
+    return render(request, 'usuarios/registro.html', {'form': form})

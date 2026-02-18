@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Registro de Usuario{% endblock %}
+
+{% block content %}
+<div class="registration-container py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <div class="card shadow-lg border-0 rounded-lg">
+                    <div class="card-header bg-sena text-white text-center py-4">
+                        <h3 class="fw-light my-2">
+                            <i class="bi bi-person-plus-fill me-2"></i>
+                            Registro de Instructor
+                        </h3>
+                        <p class="mb-0 small">SENA - Centro de la Construcción</p>
+                    </div>
+                    <div class="card-body p-4 p-md-5">
+                        <form method="post" novalidate>
+                            {% csrf_token %}
+
+                            {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                            {% endif %}
+
+                            <div class="row g-3">
+                                <!-- Datos de Usuario -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.username.id_for_label }}" class="form-label fw-bold">
+                                        <i class="bi bi-person"></i> Nombre de Usuario
+                                    </label>
+                                    {{ form.username }}
+                                    {% if form.username.errors %}
+                                    <div class="text-danger small">{{ form.username.errors }}</div>
+                                    {% endif %}
+                                    {% if form.username.help_text %}
+                                    <div class="form-text small">{{ form.username.help_text }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.email.id_for_label }}" class="form-label fw-bold">
+                                        <i class="bi bi-envelope"></i> Correo Electrónico
+                                    </label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                    <div class="text-danger small">{{ form.email.errors }}</div>
+                                    {% endif %}
+                                    {% if form.email.help_text %}
+                                    <div class="form-text small">{{ form.email.help_text }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Datos Personales -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.first_name.id_for_label }}"
+                                        class="form-label fw-bold">Nombres</label>
+                                    {{ form.first_name }}
+                                    {% if form.first_name.errors %}
+                                    <div class="text-danger small">{{ form.first_name.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.last_name.id_for_label }}"
+                                        class="form-label fw-bold">Apellidos</label>
+                                    {{ form.last_name }}
+                                    {% if form.last_name.errors %}
+                                    <div class="text-danger small">{{ form.last_name.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Datos SENA -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.documento.id_for_label }}" class="form-label fw-bold">
+                                        <i class="bi bi-card-text"></i> Documento de Identidad
+                                    </label>
+                                    {{ form.documento }}
+                                    {% if form.documento.errors %}
+                                    <div class="text-danger small">{{ form.documento.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.telefono.id_for_label }}" class="form-label fw-bold">
+                                        <i class="bi bi-telephone"></i> Teléfono
+                                    </label>
+                                    {{ form.telefono }}
+                                    {% if form.telefono.errors %}
+                                    <div class="text-danger small">{{ form.telefono.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <label for="{{ form.area_dependencia.id_for_label }}" class="form-label fw-bold">
+                                        <i class="bi bi-building"></i> Área / Dependencia SENA
+                                    </label>
+                                    {{ form.area_dependencia }}
+                                    {% if form.area_dependencia.errors %}
+                                    <div class="text-danger small">{{ form.area_dependencia.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Contrasenas -->
+                                {% for field in form %}
+                                {% if "password" in field.name %}
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ field.id_for_label }}" class="form-label fw-bold">
+                                        <i class="bi bi-lock"></i> {{ field.label }}
+                                    </label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                    <div class="text-danger small">{{ field.errors }}</div>
+                                    {% endif %}
+                                    {% if field.help_text %}
+                                    <div class="form-text tiny" style="font-size: 0.75rem; color: #6c757d;">{{ field.help_text }}</div>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            <div class="d-grid gap-2 mt-4">
+                                <button type="submit" class="btn btn-sena btn-lg">
+                                    <i class="bi bi-check-circle"></i> Registrarme Ahora
+                                </button>
+                                <a href="{% url 'usuarios:login' %}" class="btn btn-outline-secondary">
+                                    Cancelar y Volver al Login
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .registration-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .bg-sena {
+        background: linear-gradient(135deg, #FF6000 0%, #FF8C42 100%);
+    }
+
+    .btn-sena {
+        background: linear-gradient(135deg, #FF6000 0%, #FF8C42 100%);
+        border: none;
+        color: white;
+        font-weight: 500;
+        transition: transform 0.2s;
+    }
+
+    .btn-sena:hover {
+        background: linear-gradient(135deg, #FF8C42 0%, #FF6000 100%);
+        transform: translateY(-2px);
+        color: white;
+        box-shadow: 0 4px 12px rgba(255, 96, 0, 0.3);
+    }
+
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+</style>
+{% endblock %}

@@ -17,6 +17,10 @@ def dashboard_view(request):
     salas = Sala.objects.filter(activa=True)
     
     if request.method == 'POST':
+        if request.user.es_consulta:
+            messages.error(request, 'Su perfil es de SOLO CONSULTA. No tiene permisos para crear reservas.')
+            return redirect('reservas:dashboard')
+            
         form = ReservaForm(request.POST)
         if form.is_valid():
             reserva = form.save(commit=False)
@@ -49,8 +53,17 @@ def reservas_api(request):
     end = request.GET.get('end')
     sala_id = request.GET.get('sala_id')
     
-    reservas = Reserva.objects.filter(
-        estado__in=['CONFIRMADA', 'PENDIENTE'],
+    estado_filtro = request.GET.get('estado')
+    
+    # Si hay un filtro de estado específico, lo usamos.
+    # Si no, por defecto mostramos CONFIRMADA y PENDIENTE (para no saturar).
+    # Pero si el filtro permite "Todas" o "Cancelada", el API debe responder.
+    if estado_filtro:
+        reservas = Reserva.objects.filter(estado=estado_filtro)
+    else:
+        reservas = Reserva.objects.filter(estado__in=['CONFIRMADA', 'PENDIENTE'])
+
+    reservas = reservas.filter(
         fecha_inicio__gte=start,
         fecha_fin__lte=end
     ).select_related('sala', 'usuario')
@@ -61,11 +74,13 @@ def reservas_api(request):
     eventos = []
     for reserva in reservas:
         if reserva.usuario == request.user:
-            color = '#007bff'  # Azul para mis reservas (Prioridad)
+            color = '#007bff'  # Azul para mis reservas
         elif reserva.estado == 'PENDIENTE':
-            color = '#ffc107'  # Amarillo para pendientes de otros
+            color = '#ffc107'  # Amarillo para pendientes
+        elif reserva.estado == 'CANCELADA':
+            color = '#dc3545'  # Rojo para canceladas
         else:
-            color = '#28a745'  # Verde para confirmadas de otros
+            color = '#28a745'  # Verde para confirmadas
             
         eventos.append({
             'id': reserva.id,
@@ -96,11 +111,14 @@ class ReservaUpdateView(UpdateView):
     success_url = reverse_lazy('reservas:dashboard')
 
     def get_queryset(self):
-        # Solo permitir editar reservas propias o si es admin
+        # Solo permitir editar reservas propias o si es superusuario
         qs = super().get_queryset()
-        if self.request.user.is_staff or self.request.user.tipo_usuario == 'COORDINADOR':
+        if self.request.user.es_superusuario:
             return qs
-        return qs.filter(usuario=self.request.user)
+        if self.request.user.es_operativo:
+            return qs.filter(usuario=self.request.user)
+        # Si es CONSULTA o cualquier otro caso no contemplado, no ve nada
+        return qs.none()
 
     def form_valid(self, form):
         messages.success(self.request, 'Reserva actualizada exitosamente.')
@@ -113,11 +131,13 @@ class ReservaDeleteView(DeleteView):
     success_url = reverse_lazy('reservas:dashboard')
 
     def get_queryset(self):
-        # Solo permitir eliminar reservas propias o si es admin
+        # Solo permitir eliminar reservas propias o si es superusuario
         qs = super().get_queryset()
-        if self.request.user.is_staff or self.request.user.tipo_usuario == 'COORDINADOR':
+        if self.request.user.es_superusuario:
             return qs
-        return qs.filter(usuario=self.request.user)
+        if self.request.user.es_operativo:
+            return qs.filter(usuario=self.request.user)
+        return qs.none()
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, 'Reserva eliminada exitosamente.')

@@ -1,6 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+class Area(models.Model):
+    """
+    Modelo para las Áreas o Dependencias del SENA.
+    Permite que el administrador configure las opciones disponibles.
+    """
+    nombre = models.CharField(
+        max_length=100,
+        unique=True,
+        verbose_name='Nombre del Área'
+    )
+    
+    class Meta:
+        verbose_name = 'Área/Dependencia'
+        verbose_name_plural = 'Áreas/Dependencias'
+        ordering = ['nombre']
+        
+    def __str__(self):
+        return self.nombre
+
 class Usuario(AbstractUser):
     """
     Modelo de usuario personalizado para el sistema de agendamiento.
@@ -8,10 +27,9 @@ class Usuario(AbstractUser):
     """
     
     TIPO_USUARIO_CHOICES = [
-        ('INSTRUCTOR', 'Instructor'),
-        ('ADMINISTRATIVO', 'Administrativo'),
-        ('COORDINADOR', 'Coordinador'),
-        ('VISITANTE', 'Visitante'),
+        ('SUPERUSUARIO', 'Super Usuario'),
+        ('OPERATIVO', 'Operativo'),
+        ('CONSULTA', 'Consulta'),
     ]
     
     documento = models.CharField(
@@ -28,18 +46,19 @@ class Usuario(AbstractUser):
         verbose_name='Teléfono'
     )
     
-    area_dependencia = models.CharField(
-        max_length=100,
+    area_dependencia = models.ForeignKey(
+        Area,
+        on_delete=models.SET_NULL,
         blank=True,
         null=True,
         verbose_name='Área/Dependencia SENA',
-        help_text='Área o dependencia a la que pertenece en el SENA'
+        help_text='Seleccione el área o dependencia a la que pertenece'
     )
     
     tipo_usuario = models.CharField(
         max_length=20,
         choices=TIPO_USUARIO_CHOICES,
-        default='INSTRUCTOR',
+        default='CONSULTA',
         verbose_name='Tipo de Usuario'
     )
     
@@ -75,6 +94,21 @@ class Usuario(AbstractUser):
         return self.username
     
     @property
+    def es_superusuario(self):
+        """Verifica si el usuario es superusuario"""
+        return self.is_superuser or self.tipo_usuario == 'SUPERUSUARIO'
+
+    @property
+    def es_operativo(self):
+        """Verifica si el usuario tiene rol operativo"""
+        return self.tipo_usuario == 'OPERATIVO'
+
+    @property
+    def es_consulta(self):
+        """Verifica si el usuario tiene rol de consulta"""
+        return self.tipo_usuario == 'CONSULTA'
+
+    @property
     def es_administrador(self):
-        """Verifica si el usuario es administrador o coordinador"""
-        return self.is_superuser or self.tipo_usuario == 'COORDINADOR'
+        """Verifica si el usuario tiene permisos administrativos"""
+        return self.es_superusuario

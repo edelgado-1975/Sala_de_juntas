@@ -38,7 +38,8 @@ main {
 
 /* Navbar Personalizada */
 .navbar-dark.bg-sena {
-    background: linear-gradient(135deg, var(--sena-orange) 0%, var(--sena-orange-light) 100%) !important;
+    background-color: var(--sena-green) !important;
+    background: linear-gradient(135deg, var(--sena-green) 0%, #2E8B00 100%) !important;
     box-shadow: 0 2px 4px rgba(0,0,0,.1);
 }
 
@@ -58,7 +59,8 @@ main {
 
 /* Botones */
 .btn-sena {
-    background: linear-gradient(135deg, var(--sena-orange) 0%, var(--sena-orange-light) 100%);
+    background-color: var(--sena-green);
+    background: linear-gradient(135deg, var(--sena-green) 0%, #2E8B00 100%);
     border: none;
     color: white;
     font-weight: 500;
@@ -67,22 +69,22 @@ main {
 }
 
 .btn-sena:hover {
-    background: linear-gradient(135deg, var(--sena-orange-light) 0%, var(--sena-orange) 100%);
+    background: linear-gradient(135deg, #2E8B00 0%, var(--sena-green) 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 96, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(57, 169, 0, 0.3);
     color: white;
 }
 
 .btn-outline-sena {
-    border: 2px solid var(--sena-orange);
-    color: var(--sena-orange);
+    border: 2px solid var(--sena-green);
+    color: var(--sena-green);
     background: transparent;
     font-weight: 500;
     transition: all 0.3s ease;
 }
 
 .btn-outline-sena:hover {
-    background: var(--sena-orange);
+    background: var(--sena-green);
     color: white;
     transform: translateY(-2px);
 }
@@ -106,7 +108,7 @@ main {
 
 /* Badges */
 .badge-sena {
-    background: var(--sena-orange);
+    background: var(--sena-green);
     color: white;
 }
 
@@ -129,8 +131,8 @@ main {
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: var(--sena-orange);
-    box-shadow: 0 0 0 0.2rem rgba(255, 96, 0, 0.25);
+    border-color: var(--sena-green);
+    box-shadow: 0 0 0 0.2rem rgba(57, 169, 0, 0.25);
 }
 
 /* Footer */
@@ -141,11 +143,11 @@ main {
 
 /* Utility Classes */
 .text-sena {
-    color: var(--sena-orange) !important;
+    color: var(--sena-green) !important;
 }
 
 .bg-sena-light {
-    background-color: rgba(255, 96, 0, 0.1);
+    background-color: rgba(57, 169, 0, 0.1);
 }
 
 /* Responsive */

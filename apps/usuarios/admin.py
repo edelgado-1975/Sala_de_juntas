@@ -1,6 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Usuario
+from .models import Usuario, Area
+
+@admin.register(Area)
+class AreaAdmin(admin.ModelAdmin):
+    list_display = ['nombre']
+    search_fields = ['nombre']
 
 @admin.register(Usuario)
 class UsuarioAdmin(UserAdmin):

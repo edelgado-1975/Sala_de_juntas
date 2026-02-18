@@ -42,12 +42,50 @@
 {% block content %}
 <div class="row">
     <!-- Sidebar de Filtros e Informacion -->
-    <!-- Boton para abrir filtros en movil -->
+    <!-- Botones de accion en movil -->
     <div class="col-12 d-lg-none mb-3">
-        <button class="btn btn-outline-sena w-100" type="button" data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasFilters">
-            <i class="bi bi-funnel"></i> Ver Filtros e Información
-        </button>
+        <div class="mb-2">
+            <label class="form-label fw-bold small">Seleccionar Sala:</label>
+            <select class="form-select mb-2" id="filtroSalaDirectoMobile">
+                <option value="">Todas las salas</option>
+                {% for sala in salas %}
+                <option value="{{ sala.id }}">{{ sala.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="d-flex gap-2 mb-2">
+            <button class="btn btn-outline-sena flex-grow-1" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasFilters">
+                <i class="bi bi-funnel"></i> Más Filtros
+            </button>
+            {% if not user.es_consulta %}
+            <button class="btn btn-sena flex-grow-1" data-bs-toggle="modal" data-bs-target="#nuevaReservaModal">
+                <i class="bi bi-plus-circle"></i> Nueva Reserva
+            </button>
+            {% endif %}
+        </div>
+        <!-- Convenciones compactas en movil -->
+        <div class="card shadow-sm border-0 bg-light">
+            <div class="card-body py-2 px-3">
+                <div class="d-flex justify-content-between align-items-center small">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle me-1" style="width: 10px; height: 10px; background-color: #39A900;">
+                        </div>
+                        <span>Confirmada</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle me-1" style="width: 10px; height: 10px; background-color: #FFC107;">
+                        </div>
+                        <span>Pendiente</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle me-1" style="width: 10px; height: 10px; background-color: #DC3545;">
+                        </div>
+                        <span>Cancelada</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Sidebar de Filtros e Informacion (Desktop) -->
@@ -109,11 +147,13 @@
             </div>
         </div>
 
+        {% if not user.es_consulta %}
         <div class="d-grid">
             <button class="btn btn-sena btn-lg shadow-sm" data-bs-toggle="modal" data-bs-target="#nuevaReservaModal">
                 <i class="bi bi-plus-circle"></i> Nueva Reserva
             </button>
         </div>
+        {% endif %}
     </div>
 
     <!-- Offcanvas para Filtros (Movil) -->
@@ -173,12 +213,14 @@
                 </div>
             </div>
 
+            {% if not user.es_consulta %}
             <div class="d-grid">
                 <button class="btn btn-sena btn-lg" data-bs-toggle="modal" data-bs-target="#nuevaReservaModal"
                     data-bs-dismiss="offcanvas">
                     <i class="bi bi-plus-circle"></i> Nueva Reserva
                 </button>
             </div>
+            {% endif %}
         </div>
     </div>
 
@@ -280,11 +322,21 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Proposito</label>
+                        <label class="form-label">Propósito</label>
                         {{ form.proposito }}
                         {% if form.proposito.errors %}
                         <div class="text-danger small">{{ form.proposito.errors }}</div>
                         {% endif %}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Estado</label>
+                            {{ form.estado }}
+                            {% if form.estado.errors %}
+                            <div class="text-danger small">{{ form.estado.errors }}</div>
+                            {% endif %}
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -352,6 +404,25 @@
                     };
                 }
             },
+            selectable: true,
+            select: function (info) {
+                var isConsulta = '{{ user.es_consulta|yesno:"true,false" }}' === 'true';
+                if (isConsulta) return;
+
+                // Limpiar el formulario y preparar el modal
+                var modal = new bootstrap.Modal(document.getElementById('nuevaReservaModal'));
+                document.getElementById('id_fecha_inicio').value = info.startStr.slice(0, 16);
+                document.getElementById('id_fecha_fin').value = info.endStr.slice(0, 16);
+
+                // Pre-seleccionar la sala si hay un filtro de sala activo
+                var selectedSala = filtroSala.value || (document.getElementById('filtroSalaDirectoMobile') ? document.getElementById('filtroSalaDirectoMobile').value : "");
+                if (selectedSala) {
+                    var salaField = document.getElementById('id_sala');
+                    if (salaField) salaField.value = selectedSala;
+                }
+
+                modal.show();
+            },
             eventClick: function (info) {
                 var props = info.event.extendedProps;
                 document.getElementById('eventoTitulo').textContent = info.event.title;
@@ -379,57 +450,74 @@
                 var btnExportar = document.getElementById('btnExportarReserva');
 
                 var currentUserId = parseInt("{{ request.user.id }}");
-                var isStaff = "{{ request.user.is_staff|yesno:"true,false" }}" === "true";
+                var isSuper = '{{ request.user.es_superusuario|yesno:"true,false" }}' === 'true';
+                var isOperativo = '{{ request.user.es_operativo|yesno:"true,false" }}' === 'true';
 
-    btnExportar.href = "/reservas/exportar/" + info.event.id + "/";
+                btnExportar.href = "/reservas/exportar/" + info.event.id + "/";
 
-    if (props.usuario_id === currentUserId || isStaff) {
-        btnEditar.classList.remove('d-none');
-        btnEliminar.classList.remove('d-none');
-        btnEditar.href = "/reservas/editar/" + info.event.id + "/";
-        btnEliminar.href = "/reservas/eliminar/" + info.event.id + "/";
-    } else {
-        btnEditar.classList.add('d-none');
-        btnEliminar.classList.add('d-none');
-    }
+                if (isSuper || (isOperativo && props.usuario_id === currentUserId)) {
+                    btnEditar.classList.remove('d-none');
+                    btnEliminar.classList.remove('d-none');
+                    btnEditar.href = "/reservas/editar/" + info.event.id + "/";
+                    btnEliminar.href = "/reservas/eliminar/" + info.event.id + "/";
+                } else {
+                    btnEditar.classList.add('d-none');
+                    btnEliminar.classList.add('d-none');
+                }
 
-    var modal = new bootstrap.Modal(document.getElementById('eventoModal'));
-    modal.show();
+                var modal = new bootstrap.Modal(document.getElementById('eventoModal'));
+                modal.show();
             }
         });
 
-    calendar.render();
+        calendar.render();
 
-    // Sincronizar filtros Desktop -> Mobile
-    filtroSala.addEventListener('change', function () { filtroSalaMobile.value = this.value; });
-    filtroEstado.addEventListener('change', function () { filtroEstadoMobile.value = this.value; });
+        const filtroSalaDirectoMobile = document.getElementById('filtroSalaDirectoMobile');
 
-    // Sincronizar filtros Mobile -> Desktop
-    filtroSalaMobile.addEventListener('change', function () { filtroSala.value = this.value; });
-    filtroEstadoMobile.addEventListener('change', function () { filtroEstado.value = this.value; });
+        // Sincronizar filtros Desktop -> Mobile
+        filtroSala.addEventListener('change', function () {
+            filtroSalaMobile.value = this.value;
+            filtroSalaDirectoMobile.value = this.value;
+        });
+        filtroEstado.addEventListener('change', function () { filtroEstadoMobile.value = this.value; });
 
-    function aplicarFiltros() {
-        calendar.refetchEvents();
-    }
+        // Sincronizar filtros Mobile -> Desktop
+        filtroSalaMobile.addEventListener('change', function () {
+            filtroSala.value = this.value;
+            filtroSalaDirectoMobile.value = this.value;
+        });
+        filtroEstadoMobile.addEventListener('change', function () { filtroEstado.value = this.value; });
 
-    btnFiltrar.addEventListener('click', aplicarFiltros);
-    btnFiltrarMobile.addEventListener('click', function () {
-        aplicarFiltros();
-        bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasFilters')).hide();
-    });
+        // Evento para el selector directo de movil
+        filtroSalaDirectoMobile.addEventListener('change', function () {
+            filtroSala.value = this.value;
+            filtroSalaMobile.value = this.value;
+            aplicarFiltros();
+        });
 
-    btnLimpiar.addEventListener('click', function () {
-        filtroSala.value = "";
-        filtroEstado.value = "";
-        filtroSalaMobile.value = "";
-        filtroEstadoMobile.value = "";
-        calendar.refetchEvents();
-    });
+        function aplicarFiltros() {
+            calendar.refetchEvents();
+        }
 
-    {% if form.errors %}
-    var myModal = new bootstrap.Modal(document.getElementById('nuevaReservaModal'));
-    myModal.show();
-    {% endif %}
+        btnFiltrar.addEventListener('click', aplicarFiltros);
+        btnFiltrarMobile.addEventListener('click', function () {
+            aplicarFiltros();
+            bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasFilters')).hide();
+        });
+
+        btnLimpiar.addEventListener('click', function () {
+            filtroSala.value = "";
+            filtroEstado.value = "";
+            filtroSalaMobile.value = "";
+            filtroEstadoMobile.value = "";
+            if (filtroSalaDirectoMobile) filtroSalaDirectoMobile.value = "";
+            calendar.refetchEvents();
+        });
+
+        {% if form.errors %}
+        var myModal = new bootstrap.Modal(document.getElementById('nuevaReservaModal'));
+        myModal.show();
+        {% endif %}
     });
 </script>
 {% endblock %}

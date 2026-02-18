@@ -23,7 +23,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 
 def es_admin(user):
-    return user.is_staff or user.tipo_usuario == 'COORDINADOR'
+    return user.es_superusuario or user.es_operativo
 
 @login_required
 @user_passes_test(es_admin)
