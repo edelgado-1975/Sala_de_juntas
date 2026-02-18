@@ -140,12 +140,12 @@
     // Datos para graficos
     var salasData = {
         labels: [{% for item in reservas_por_sala %} "{{ item.sala__nombre }}", {% endfor %}],
-    data: [{% for item in reservas_por_sala %} { { item.total } }, {% endfor %}]
+    data: [{% for item in reservas_por_sala %} {{ item.total }}, {% endfor %}]
     };
 
     var estadosData = {
         labels: [{% for item in reservas_por_estado %} "{{ item.estado }}", {% endfor %}],
-    data: [{% for item in reservas_por_estado %} { { item.total } }, {% endfor %}]
+    data: [{% for item in reservas_por_estado %} {{ item.total }}, {% endfor %}]
     };
 
     // Grafico de Barras (Salas)
