@@ -1,5 +1,6 @@
 from .models import Reserva, Sala
 from .forms import ReservaForm
+from .notifications import notificar_reserva_creada, notificar_reserva_actualizada, notificar_reserva_cancelada
 from django.utils.timezone import localtime
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -28,6 +29,7 @@ def dashboard_view(request):
             reserva.estado = 'CONFIRMADA'
             try:
                 reserva.save()
+                notificar_reserva_creada(reserva)
                 messages.success(request, 'Reserva creada exitosamente.')
                 return redirect('reservas:dashboard')
             except Exception as e:
@@ -121,6 +123,8 @@ class ReservaUpdateView(UpdateView):
         return qs.none()
 
     def form_valid(self, form):
+        reserva = form.save()
+        notificar_reserva_actualizada(reserva)
         messages.success(self.request, 'Reserva actualizada exitosamente.')
         return super().form_valid(form)
 
@@ -140,6 +144,8 @@ class ReservaDeleteView(DeleteView):
         return qs.none()
 
     def delete(self, request, *args, **kwargs):
+        reserva = self.get_object()
+        notificar_reserva_cancelada(reserva)
         messages.success(self.request, 'Reserva eliminada exitosamente.')
         return super().delete(request, *args, **kwargs)
 

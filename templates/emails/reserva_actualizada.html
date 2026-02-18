@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: #004884;
+            padding: 24px 32px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: white;
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.85);
+            margin: 4px 0 0;
+            font-size: 14px;
+        }
+
+        .body {
+            padding: 32px;
+        }
+
+        .body h2 {
+            color: #004884;
+            margin-top: 0;
+        }
+
+        .detail-box {
+            background: #f8f9fa;
+            border-left: 4px solid #004884;
+            border-radius: 4px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .detail-box p {
+            margin: 6px 0;
+            color: #333;
+            font-size: 15px;
+        }
+
+        .detail-box strong {
+            color: #004884;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #004884;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 16px 32px;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 Reserva Actualizada</h1>
+            <p>SENA - Centro de la Construcción, Cali</p>
+        </div>
+        <div class="body">
+            <h2>Hola, {{ reserva.usuario.get_full_name|default:reserva.usuario.username }}!</h2>
+            <p>Tu reserva ha sido <strong>actualizada</strong>. Aquí están los nuevos detalles:</p>
+            <div class="detail-box">
+                <p>🏢 <strong>Sala:</strong> {{ reserva.sala.nombre }}</p>
+                <p>📋 <strong>Propósito:</strong> {{ reserva.proposito }}</p>
+                <p>📅 <strong>Inicio:</strong> {{ reserva.fecha_inicio|date:"l, d \d\e F \d\e Y \a \l\a\s H:i" }}</p>
+                <p>🏁 <strong>Fin:</strong> {{ reserva.fecha_fin|date:"l, d \d\e F \d\e Y \a \l\a\s H:i" }}</p>
+                <p>👥 <strong>Asistentes:</strong> {{ reserva.num_asistentes }} personas</p>
+                <p>📌 <strong>Estado:</strong> <span class="badge">{{ reserva.get_estado_display }}</span></p>
+            </div>
+            <p style="color:#555; font-size:14px;">Si no realizaste este cambio, por favor contacta al administrador del
+                sistema.</p>
+        </div>
+        <div class="footer">
+            Sistema de Agendamiento de Salas de Juntas &bull; SENA Centro de la Construcción &bull; Cali, Colombia
+        </div>
+    </div>
+</body>
+
+</html>
