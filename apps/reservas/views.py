@@ -124,7 +124,12 @@ class ReservaUpdateView(UpdateView):
 
     def form_valid(self, form):
         reserva = form.save()
-        notificar_reserva_actualizada(reserva)
+        # Si el estado cambió a CANCELADA, enviar notificación de cancelación específica
+        if 'estado' in form.changed_data and reserva.estado == 'CANCELADA':
+            notificar_reserva_cancelada(reserva)
+        else:
+            notificar_reserva_actualizada(reserva)
+            
         messages.success(self.request, 'Reserva actualizada exitosamente.')
         return super().form_valid(form)
 
