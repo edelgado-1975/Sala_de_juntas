@@ -4,12 +4,11 @@
 
 :root {
     /* Colores SENA */
-    --sena-orange: #FF6000;
-    --sena-orange-light: #FF8C42;
-    --sena-orange-dark: #CC4D00;
     --sena-green: #39A900;
+    --sena-green-dark: #2E8B00;
+    --sena-green-light: #4DC01A;
     --sena-blue: #004884;
-    
+
     /* Grises */
     --gray-100: #f8f9fa;
     --gray-200: #e9ecef;
@@ -40,7 +39,7 @@ main {
 .navbar-dark.bg-sena {
     background-color: var(--sena-green) !important;
     background: linear-gradient(135deg, var(--sena-green) 0%, #2E8B00 100%) !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
 }
 
 .navbar-brand {
@@ -93,12 +92,12 @@ main {
 .card {
     border: none;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
 }
 
 .card:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 .card-header {
@@ -123,14 +122,16 @@ main {
 }
 
 /* Forms */
-.form-control, .form-select {
+.form-control,
+.form-select {
     border-radius: 8px;
     border: 1px solid #dee2e6;
     padding: 10px 15px;
     transition: all 0.3s ease;
 }
 
-.form-control:focus, .form-select:focus {
+.form-control:focus,
+.form-select:focus {
     border-color: var(--sena-green);
     box-shadow: 0 0 0 0.2rem rgba(57, 169, 0, 0.25);
 }
@@ -155,12 +156,13 @@ main {
     .navbar-brand span {
         font-size: 0.95rem;
     }
-    
+
     .card {
         margin-bottom: 1rem;
     }
 
-    .container, .container-fluid {
+    .container,
+    .container-fluid {
         padding-left: 15px;
         padding-right: 15px;
     }
@@ -177,7 +179,10 @@ main {
 
 /* Mejora de accesibilidad tactil */
 @media (pointer: coarse) {
-    .btn, .nav-link, .dropdown-item {
+
+    .btn,
+    .nav-link,
+    .dropdown-item {
         min-height: 44px;
         display: flex;
         align-items: center;
@@ -190,6 +195,7 @@ main {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -203,7 +209,7 @@ main {
 /* Loading Spinner */
 .spinner-sena {
     border: 3px solid var(--gray-200);
-    border-top: 3px solid var(--sena-orange);
+    border-top: 3px solid var(--sena-green);
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -211,6 +217,11 @@ main {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
