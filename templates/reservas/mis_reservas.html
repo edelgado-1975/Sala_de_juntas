@@ -44,7 +44,7 @@
                         <td>
                             <div><i class="bi bi-calendar-event me-1"></i> {{ reserva.fecha_inicio|date:"d/m/Y" }}</div>
                             <small class="text-muted"><i class="bi bi-clock me-1"></i> {{
-                                reserva.fecha_inicio|time:"H:i" }} - {{ reserva.fecha_fin|time:"H:i" }}</small>
+                                reserva.fecha_inicio|date:"H:i" }} - {{ reserva.fecha_fin|date:"H:i" }}</small>
                         </td>
                         <td>{{ reserva.proposito }}</td>
                         <td>
