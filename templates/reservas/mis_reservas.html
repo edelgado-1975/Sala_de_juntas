@@ -8,12 +8,44 @@
     <div class="col-12">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'reservas:dashboard' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'reservas:dashboard' %}"
+                        class="text-sena text-decoration-none">Inicio</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Mis Reservas</li>
             </ol>
         </nav>
-        <h2 class="fw-bold"><i class="bi bi-calendar-check text-sena"></i> Mis Reservas</h2>
-        <p class="text-muted">Gestione aquí sus agendamientos actuales y pasados.</p>
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="fw-bold mb-1"><i class="bi bi-calendar-check text-sena"></i> Mis Reservas</h2>
+                <p class="text-muted">Gestione aquí sus agendamientos personales.</p>
+            </div>
+            <a href="{% url 'reservas:dashboard' %}" class="btn btn-outline-sena btn-sm">
+                <i class="bi bi-plus-circle"></i> Nueva Reserva
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Filtros -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="btn-group btn-group-sm shadow-sm" role="group">
+            <a href="{% url 'reservas:mis_reservas' %}"
+                class="btn {% if not estado_actual %}btn-sena{% else %}btn-outline-sena{% endif %}">
+                Todas
+            </a>
+            <a href="{% url 'reservas:mis_reservas' %}?estado=CONFIRMADA"
+                class="btn {% if estado_actual == 'CONFIRMADA' %}btn-sena{% else %}btn-outline-sena{% endif %}">
+                Confirmadas
+            </a>
+            <a href="{% url 'reservas:mis_reservas' %}?estado=PENDIENTE"
+                class="btn {% if estado_actual == 'PENDIENTE' %}btn-sena{% else %}btn-outline-sena{% endif %}">
+                Pendientes
+            </a>
+            <a href="{% url 'reservas:mis_reservas' %}?estado=CANCELADA"
+                class="btn {% if estado_actual == 'CANCELADA' %}btn-sena{% else %}btn-outline-sena{% endif %}">
+                Canceladas
+            </a>
+        </div>
     </div>
 </div>
 
@@ -42,11 +74,18 @@
                             </div>
                         </td>
                         <td>
-                            <div><i class="bi bi-calendar-event me-1"></i> {{ reserva.fecha_inicio|date:"d/m/Y" }}</div>
-                            <small class="text-muted"><i class="bi bi-clock me-1"></i> {{
-                                reserva.fecha_inicio|date:"H:i" }} - {{ reserva.fecha_fin|date:"H:i" }}</small>
+                            <div class="mb-1">
+                                <i class="bi bi-calendar-event me-1 text-sena"></i> {{ reserva.fecha_inicio|date:"d/m/Y"
+                                }}
+                            </div>
+                            <small class="text-muted d-block">
+                                <i class="bi bi-clock me-1 text-sena"></i> {{ reserva.fecha_inicio|date:"H:i" }} - {{
+                                reserva.fecha_fin|date:"H:i" }}
+                            </small>
                         </td>
-                        <td>{{ reserva.proposito }}</td>
+                        <td>
+                            <span class="fw-medium">{{ reserva.proposito }}</span>
+                        </td>
                         <td>
                             {% if reserva.estado == 'CONFIRMADA' %}
                             <span class="badge bg-success">Confirmada</span>
@@ -82,7 +121,7 @@
                         <td colspan="5" class="text-center py-5">
                             <div class="text-muted">
                                 <i class="bi bi-calendar-x display-4 d-block mb-3"></i>
-                                <p>No tienes reservas registradas en este momento.</p>
+                                <p>No se encontraron reservas con este filtro.</p>
                                 <a href="{% url 'reservas:dashboard' %}" class="btn btn-sena">
                                     <i class="bi bi-plus-circle me-1"></i> Hacer mi primera reserva
                                 </a>

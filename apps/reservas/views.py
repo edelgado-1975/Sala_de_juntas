@@ -196,6 +196,18 @@ def exportar_reserva_ics(request, pk):
 def mis_reservas_view(request):
     """
     Vista que muestra las reservas realizadas por el usuario actual.
+    Permite filtrar por estado.
     """
-    reservas = Reserva.objects.filter(usuario=request.user).select_related('sala')
-    return render(request, 'reservas/mis_reservas.html', {'reservas': reservas})
+    estado = request.GET.get('estado')
+    reservas = Reserva.objects.filter(usuario=request.user)
+    
+    if estado:
+        reservas = reservas.filter(estado=estado)
+        
+    reservas = reservas.select_related('sala').order_by('-fecha_inicio')
+    
+    context = {
+        'reservas': reservas,
+        'estado_actual': estado,
+    }
+    return render(request, 'reservas/mis_reservas.html', context)
