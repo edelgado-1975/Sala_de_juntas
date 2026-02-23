@@ -192,4 +192,10 @@ def exportar_reserva_ics(request, pk):
     response = HttpResponse(cal.to_ical(), content_type="text/calendar")
     response['Content-Disposition'] = f'attachment; filename="reserva_{reserva.id}.ics"'
     
-    return response
+@login_required
+def mis_reservas_view(request):
+    """
+    Vista que muestra las reservas realizadas por el usuario actual.
+    """
+    reservas = Reserva.objects.filter(usuario=request.user).select_related('sala')
+    return render(request, 'reservas/mis_reservas.html', {'reservas': reservas})

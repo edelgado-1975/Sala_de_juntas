@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mis Reservas - SENA{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'reservas:dashboard' %}">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Mis Reservas</li>
+            </ol>
+        </nav>
+        <h2 class="fw-bold"><i class="bi bi-calendar-check text-sena"></i> Mis Reservas</h2>
+        <p class="text-muted">Gestione aquí sus agendamientos actuales y pasados.</p>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4">Sala</th>
+                        <th>Fecha y Hora</th>
+                        <th>Propósito</th>
+                        <th>Estado</th>
+                        <th class="text-end pe-4">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reserva in reservas %}
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-sena-light text-sena-green me-2">
+                                    <i class="bi bi-door-closed"></i>
+                                </span>
+                                <strong>{{ reserva.sala.nombre }}</strong>
+                            </div>
+                        </td>
+                        <td>
+                            <div><i class="bi bi-calendar-event me-1"></i> {{ reserva.fecha_inicio|date:"d/m/Y" }}</div>
+                            <small class="text-muted"><i class="bi bi-clock me-1"></i> {{
+                                reserva.fecha_inicio|time:"H:i" }} - {{ reserva.fecha_fin|time:"H:i" }}</small>
+                        </td>
+                        <td>{{ reserva.proposito }}</td>
+                        <td>
+                            {% if reserva.estado == 'CONFIRMADA' %}
+                            <span class="badge bg-success">Confirmada</span>
+                            {% elif reserva.estado == 'PENDIENTE' %}
+                            <span class="badge bg-warning text-dark">Pendiente</span>
+                            {% elif reserva.estado == 'CANCELADA' %}
+                            <span class="badge bg-danger">Cancelada</span>
+                            {% else %}
+                            <span class="badge bg-secondary">{{ reserva.estado }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end pe-4">
+                            <div class="btn-group btn-group-sm">
+                                <a href="{% url 'reservas:exportar_ics' reserva.pk %}" class="btn btn-outline-secondary"
+                                    title="Exportar a Calendario">
+                                    <i class="bi bi-calendar-plus"></i>
+                                </a>
+                                {% if reserva.estado != 'CANCELADA' %}
+                                <a href="{% url 'reservas:editar' reserva.pk %}" class="btn btn-outline-sena"
+                                    title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'reservas:eliminar' reserva.pk %}" class="btn btn-outline-danger"
+                                    title="Cancelar/Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <div class="text-muted">
+                                <i class="bi bi-calendar-x display-4 d-block mb-3"></i>
+                                <p>No tienes reservas registradas en este momento.</p>
+                                <a href="{% url 'reservas:dashboard' %}" class="btn btn-sena">
+                                    <i class="bi bi-plus-circle me-1"></i> Hacer mi primera reserva
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
