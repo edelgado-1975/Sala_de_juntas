@@ -75,12 +75,13 @@
                         </td>
                         <td>
                             <div class="mb-1">
-                                <i class="bi bi-calendar-event me-1 text-sena"></i> {{ reserva.fecha_inicio|date:"d/m/Y"
-                                }}
+                                <i class="bi bi-calendar-event me-1 text-sena"></i>
+                                {{ reserva.fecha_inicio|date:"d/m/Y" }}
                             </div>
                             <small class="text-muted d-block">
-                                <i class="bi bi-clock me-1 text-sena"></i> {{ reserva.fecha_inicio|date:"H:i" }} - {{
-                                reserva.fecha_fin|date:"H:i" }}
+                                <i class="bi bi-clock me-1 text-sena"></i>
+                                {{ reserva.fecha_inicio|date:"H:i" }} -
+                                {{ reserva.fecha_fin|date:"H:i" }}
                             </small>
                         </td>
                         <td>

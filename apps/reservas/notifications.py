@@ -14,23 +14,31 @@ logger = logging.getLogger(__name__)
 def _enviar_email(asunto, template_html, contexto, destinatarios):
     """
     Función interna para enviar emails HTML con fallback a texto plano.
+    Envía de forma individual para asegurar que cada destinatario reciba su copia
+    y para un mejor seguimiento en los logs.
     """
-    try:
-        html_message = render_to_string(template_html, contexto)
-        plain_message = strip_tags(html_message)
-        send_mail(
-            subject=asunto,
-            message=plain_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=destinatarios,
-            html_message=html_message,
-            fail_silently=False,
-        )
-        logger.info(f"Email '{asunto}' enviado a {destinatarios}")
-        return True
-    except Exception as e:
-        logger.error(f"Error al enviar email '{asunto}': {str(e)}")
-        return False
+    enviados = 0
+    # Eliminar duplicados y valores nulos
+    destinatarios_limpios = list(set([d for d in destinatarios if d]))
+    
+    for email in destinatarios_limpios:
+        try:
+            html_message = render_to_string(template_html, contexto)
+            plain_message = strip_tags(html_message)
+            send_mail(
+                subject=asunto,
+                message=plain_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[email],
+                html_message=html_message,
+                fail_silently=False,
+            )
+            logger.info(f"Email '{asunto}' enviado exitosamente a {email}")
+            enviados += 1
+        except Exception as e:
+            logger.error(f"Error al enviar email '{asunto}' a {email}: {str(e)}")
+    
+    return enviados > 0
 
 
 def notificar_reserva_creada(reserva):
