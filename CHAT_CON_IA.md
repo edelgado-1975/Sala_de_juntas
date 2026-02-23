@@ -1,37 +1,60 @@
-# Registro de Trazabilidad y Chat con IA - SENA Sala de Juntas
+# Historial Completo de Conversación y Trazabilidad - SENA Sala de Juntas
 
-Este documento contiene el historial de trabajo, decisiones técnicas y conversaciones mantenidas con la IA para el desarrollo del Sistema de Agendamiento de Salas de Juntas (v1.0.0).
-
-## 📅 Sesión: 23 de Febrero de 2026
-
-### Resumen de la Jornada
-En esta sesión se abordaron hitos críticos de estabilidad, auditoría de seguridad y refinamiento de la experiencia de usuario (UI/UX). Se logró la centralización de notificaciones y la corrección de errores de renderizado en el front-end.
-
-### 🛠️ Intervenciones Técnicas
-1. **Refinamiento de "Mis Reservas"**: 
-   - Se corrigió un error de sintaxis en el motor de plantillas de Django que provocaba que el código literal fuera visible en pantalla.
-   - Se implementó un formato de "líneas ultra-seguras" para evitar que el auto-formateador del servidor rompiera las etiquetas de fecha y hora.
-2. **Auditoría de Notificaciones por Email**:
-   - Se detectó que la deduplicación de correos (usuario = administrador) causaba confusión sobre la recepción de mensajes.
-   - Se **centralizaron las notificaciones en Señales (Signals)** de Django (`post_save` y `post_delete`), garantizando que lleguen correos incluso si las acciones se realizan desde el panel administrativo.
-   - Se implementó la **entrega individual** de correos para mejorar la trazabilidad y confiabilidad en los logs del servidor.
-3. **Mejoras de Navegación**:
-   - Se validaron y corrigieron todos los estados "activos" del menú principal para proporcionar un contexto claro de ubicación al usuario.
-
-### 💬 Resumen del Chat e Instrucciones
-- **Usuario**: Reportó problemas de visualización en la página de reservas ("nada seguimos iguales" / "quedo peor").
-- **IA**: Identificó un problema de "wrapping" de líneas en el sistema de archivos que cortaba las etiquetas de Django. Resuelto con formato vertical.
-- **Usuario**: Solicitó auditoría de correos porque no llegaban al usuario en cancelaciones.
-- **IA**: Realizó diagnóstico en base de datos, verificó que el usuario Root tenía el mismo correo que el Admin, y procedió a blindar el sistema mediante señales para que sea infalible.
-- **Usuario**: Solicitó este archivo de registro (`CHAT_CON_IA.md`) para trazabilidad diaria.
+Este documento registra la interacción completa entre el **Usuario** y la **IA (Antigravity)** para el desarrollo del Sistema de Agendamiento de Salas de Juntas.
 
 ---
 
-## 🏗️ Estado Actual del Proyecto (v1.0.0)
-- **Base de Datos**: MySQL (XAMPP) configurada y optimizada.
-- **Calidad ISO/IEC 25000**: Implementados pilares de Desempeño, Seguridad (Logs de login), Accesibilidad (ARIA), Auditoría (Historial) y Portabilidad (Docker).
-- **Seguridad**: Time-out de sesión configurado a 5 minutos.
-- **Documentación**: Todos los manuales generados y actualizados.
+## 📅 Sesión Actual: Fase de Estabilización y Calidad (23 Feb 2026)
+
+**Usuario**: *¿Puedes resumir qué hemos hecho hoy?*
+**IA**: Hoy nos enfocamos en pulir la página de "Mis Reservas", corregimos errores de visualización de fechas, centralizamos las notificaciones por correo en señales (signals) para que sean infalibles y preparamos el proyecto para la auditoría institucional bajo ISO 25000.
+
+**Usuario**: *Quedó peor (mostrando imagen con código literal en pantalla).*
+**IA**: Identifiqué que el sistema de archivos del servidor estaba insertando saltos de línea automáticos que rompían las etiquetas de Django. Rediseñé el código HTML con un formato de "líneas seguras" (una etiqueta por línea) para que el servidor no pueda romper el código.
+
+**Usuario**: *Revisa el envío de correo. Cancelé una reserva y solo llegó al administrador, pero al usuario no.*
+**IA**: Tras auditar la base de datos y el código, encontré que el usuario Root tiene el mismo correo que el Admin, por lo que Gmail deduplica los mensajes. Sin embargo, blindé el sistema:
+1. Centralicé todo en `signals.py`.
+2. Implementé envíos individuales (no por lista) para asegurar la entrega a cada destinatario por separado.
+3. Agregué logs detallados para auditoría.
+
+**Usuario**: *Listo, graba todo el proyecto y el chat que tenemos en un archivo llamado CHAT_CON_IA.md.*
+**IA**: Procediendo a crear el registro de trazabilidad y el historial de diálogo para mantener el control diario del trabajo.
 
 ---
-*Archivo actualizado automáticamente al cierre de la sesión por Antigravity AI.*
+
+## 🔍 Resumen de Sesiones Anteriores (Hitos del Proyecto)
+
+### Fase 1: Cimientos y Estreuctura
+- **Conversación**: *Diseño de arquitectura modular.*
+- **Logro**: Creación de aplicaciones separadas (`usuarios`, `salas`, `reservas`, `informes`) bajo estándares Clean Architecture para Django.
+
+### Fase 2: Lógica de Negocio y QA Institucional
+- **Conversación**: *Implementación de directivas SENA (Buffers, Lead Times, Aforo).*
+- **Logro**: Desarrollo de validaciones estrictas en el modelo `Reserva` para impedir solapamientos y garantizar el uso eficiente de las salas.
+
+### Fase 3: Branding y Experiencia de Usuario
+- **Conversación**: *Cambio de naranja a Verde Institucional SENA.*
+- **Logro**: Migración completa del sistema de diseño (CSS) a los colores institucionales y adición de logotipos oficiales en el Navbar y Login.
+
+### Fase 4: Seguridad e Informes
+- **Conversación**: *Generación de PDF/Excel y Seguridad ISO.*
+- **Logro**: Implementación de reportes dinámicos y configuración de Logs de Seguridad para intentos fallidos de acceso.
+
+---
+
+## 📝 Registro de Trazabilidad Técnica
+
+| Fecha | Hito | Estado |
+| :--- | :--- | :--- |
+| 10 Feb | Inicialización de Git y Django | ✅ Ok |
+| 15 Feb | Lógica de FullCalendar y APIs | ✅ Ok |
+| 18 Feb | RBAC (Roles de Usuario) y Móvil | ✅ Ok |
+| 23 Feb | **Auditoría de Emails y Estabilidad (v1.0.0)** | 🚀 Finalizado |
+
+## 💡 Notas de la IA para Futuras Sesiones
+- El sistema de notificaciones ahora es independiente de las vistas (Vistas → Guardar → Señal → Email).
+- Se recomienda que cualquier cambio en plantillas HTML mantenga las etiquetas Django en líneas cortas para evitar el "wrapping" del editor local del usuario.
+
+---
+*Fin del registro de hoy. Este archivo se actualizará al final de cada jornada.*
