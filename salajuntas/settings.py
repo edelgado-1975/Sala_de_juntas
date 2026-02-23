@@ -160,6 +160,11 @@ LOGIN_URL = 'usuarios:login'
 LOGIN_REDIRECT_URL = 'reservas:dashboard'
 LOGOUT_REDIRECT_URL = 'usuarios:login'
 
+# Session Timeout (Inactividad)
+SESSION_COOKIE_AGE = 300  # 300 segundos = 5 minutos
+SESSION_SAVE_EVERY_REQUEST = True  # Reinicia el contador en cada interacción
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 
 # Email configuration
 EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
@@ -169,6 +174,7 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@sena.edu.co')
+ADMIN_EMAIL = config('ADMIN_EMAIL', default=DEFAULT_FROM_EMAIL)
 
 
 # SENA Configuration
