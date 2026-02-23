@@ -112,3 +112,26 @@ class Usuario(AbstractUser):
     def es_administrador(self):
         """Verifica si el usuario tiene permisos administrativos"""
         return self.es_superusuario
+
+class LogSeguridad(models.Model):
+    """
+    Modelo para registrar eventos de seguridad (ej. fallos de login)
+    """
+    TIPO_EVENTO_CHOICES = [
+        ('LOGIN_FALLIDO', 'Inicio de Sesión Fallido'),
+        ('ACCESO_DENEGADO', 'Acceso Denegado'),
+    ]
+    
+    fecha = models.DateTimeField(auto_now_add=True, verbose_name='Fecha y Hora')
+    usuario_intentado = models.CharField(max_length=150, blank=True, null=True, verbose_name='Usuario Intentado')
+    ip_address = models.GenericIPAddressField(blank=True, null=True, verbose_name='Dirección IP')
+    tipo_evento = models.CharField(max_length=20, choices=TIPO_EVENTO_CHOICES, verbose_name='Tipo de Evento')
+    descripcion = models.TextField(blank=True, null=True, verbose_name='Descripción')
+    
+    class Meta:
+        verbose_name = 'Log de Seguridad'
+        verbose_name_plural = 'Logs de Seguridad'
+        ordering = ['-fecha']
+        
+    def __str__(self):
+        return f"{self.tipo_evento} - {self.usuario_intentado} - {self.fecha.strftime('%d/%m/%Y %H:%M')}"

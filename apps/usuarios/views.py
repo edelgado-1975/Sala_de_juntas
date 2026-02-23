@@ -6,6 +6,16 @@ from django.urls import reverse_lazy
 from .forms import LoginForm, PerfilForm, RegistroUserForm
 
 
+from .models import LogSeguridad
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
 def login_view(request):
     """Vista de inicio de sesión"""
     if request.user.is_authenticated:
@@ -13,8 +23,8 @@ def login_view(request):
     
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)
+        username = request.POST.get('username')
         if form.is_valid():
-            username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             
@@ -26,6 +36,13 @@ def login_view(request):
                 next_url = request.GET.get('next', 'reservas:dashboard')
                 return redirect(next_url)
         else:
+            # Registrar fallo de seguridad
+            LogSeguridad.objects.create(
+                usuario_intentado=username,
+                ip_address=get_client_ip(request),
+                tipo_evento='LOGIN_FALLIDO',
+                descripcion='Intento de inicio de sesión con credenciales incorrectas.'
+            )
             messages.error(request, 'Usuario o contraseña incorrectos.')
     else:
         form = LoginForm()

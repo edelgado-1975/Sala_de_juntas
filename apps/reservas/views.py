@@ -15,7 +15,7 @@ def dashboard_view(request):
     Vista principal del dashboard con el calendario de reservas.
     Maneja también la creación rápida de reservas.
     """
-    salas = Sala.objects.filter(activa=True)
+    salas = Sala.objects.filter(activa=True).select_related()
     
     if request.method == 'POST':
         if request.user.es_consulta:

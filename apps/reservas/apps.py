@@ -5,3 +5,6 @@ class ReservasConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'apps.reservas'
     verbose_name = 'Gestión de Reservas'
+
+    def ready(self):
+        import apps.reservas.signals

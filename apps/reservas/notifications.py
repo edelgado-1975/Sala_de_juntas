@@ -35,47 +35,50 @@ def _enviar_email(asunto, template_html, contexto, destinatarios):
 
 def notificar_reserva_creada(reserva):
     """
-    Envía notificación al usuario cuando crea una reserva.
+    Envía notificación al usuario y al administrador cuando se crea una reserva.
     """
-    if not reserva.usuario.email:
-        return
+    destinatarios = [settings.ADMIN_EMAIL]
+    if reserva.usuario.email and reserva.usuario.email not in destinatarios:
+        destinatarios.append(reserva.usuario.email)
 
     contexto = {'reserva': reserva, 'accion': 'creada'}
     _enviar_email(
         asunto=f'✅ Reserva Confirmada - {reserva.sala.nombre} | SENA',
         template_html='emails/reserva_confirmada.html',
         contexto=contexto,
-        destinatarios=[reserva.usuario.email],
+        destinatarios=destinatarios,
     )
 
 
 def notificar_reserva_actualizada(reserva):
     """
-    Envía notificación al usuario cuando actualiza una reserva.
+    Envía notificación al usuario y al administrador cuando se actualiza una reserva.
     """
-    if not reserva.usuario.email:
-        return
+    destinatarios = [settings.ADMIN_EMAIL]
+    if reserva.usuario.email and reserva.usuario.email not in destinatarios:
+        destinatarios.append(reserva.usuario.email)
 
     contexto = {'reserva': reserva, 'accion': 'actualizada'}
     _enviar_email(
         asunto=f'📝 Reserva Actualizada - {reserva.sala.nombre} | SENA',
         template_html='emails/reserva_actualizada.html',
         contexto=contexto,
-        destinatarios=[reserva.usuario.email],
+        destinatarios=destinatarios,
     )
 
 
 def notificar_reserva_cancelada(reserva):
     """
-    Envía notificación al usuario cuando cancela/elimina una reserva.
+    Envía notificación al usuario y al administrador cuando se cancela/elimina una reserva.
     """
-    if not reserva.usuario.email:
-        return
+    destinatarios = [settings.ADMIN_EMAIL]
+    if reserva.usuario.email and reserva.usuario.email not in destinatarios:
+        destinatarios.append(reserva.usuario.email)
 
     contexto = {'reserva': reserva, 'accion': 'cancelada'}
     _enviar_email(
         asunto=f'❌ Reserva Cancelada - {reserva.sala.nombre} | SENA',
         template_html='emails/reserva_cancelada.html',
         contexto=contexto,
-        destinatarios=[reserva.usuario.email],
+        destinatarios=destinatarios,
     )

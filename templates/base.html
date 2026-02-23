@@ -25,38 +25,44 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-sena">
         <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center me-0" href="{% url 'reservas:dashboard' %}">
+            <a class="navbar-brand d-flex align-items-center me-0" href="{% url 'reservas:dashboard' %}"
+                aria-label="Volver al inicio">
                 <img src="{% static 'img/logo-sena.png' %}" alt="Logo SENA" height="50" class="me-2"
                     style="filter: brightness(0) invert(1);">
-                <span class="fs-4 fw-bold">SENA - Sala de Juntas</span>
+                <span class="d-none d-md-inline">SENA - Sala de Juntas</span>
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Cerrar/Abrir menú de navegación">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'reservas:dashboard' %}">
+                        <a class="nav-link" href="{% url 'reservas:dashboard' %}"
+                            aria-label="Ver Calendario de Reservas">
                             <i class="bi bi-house-door"></i> Inicio
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="bi bi-calendar3"></i> Mis Reservas
+                        <a class="nav-link" href="{% url 'reservas:mis_reservas' %}"
+                            aria-label="Ver mis reservas personales">
+                            <i class="bi bi-calendar-check"></i> Mis Reservas
                         </a>
                     </li>
                     {% if user.es_superusuario or user.es_operativo %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'informes:dashboard' %}">
+                        <a class="nav-link" href="{% url 'informes:biblioteca' %}"
+                            aria-label="Acceder a informes y reportes">
                             <i class="bi bi-bar-chart-line"></i> Informes
                         </a>
                     </li>
                     {% endif %}
                     {% if user.es_superusuario %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'admin:index' %}">
+                        <a class="nav-link" href="/admin/" target="_blank"
+                            aria-label="Administración del sistema (solo superusuario)">
                             <i class="bi bi-gear"></i> Admin
                         </a>
                     </li>
