@@ -137,5 +137,5 @@ sudo systemctl restart gunicorn
 ## 8. Contacto y Soporte
 
 - **Repositorio**: https://github.com/edelgado-1975/Sala_de_juntas
-- **Versión**: v1.0.0
+- **Versión**: v1.1.0
 - **Fecha**: Febrero 2026

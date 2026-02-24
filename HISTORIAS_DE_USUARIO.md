@@ -1,5 +1,5 @@
 # 📋 Historias de Usuario (ISO/IEC 25000)
-## Proyecto: Sistema de Agendamiento de Salas de Juntas - SENA v1.0.0
+## Proyecto: Sistema de Agendamiento de Salas de Juntas - SENA v1.1.0
 
 Este documento detalla los requerimientos funcionales y no funcionales del sistema bajo el estándar **ISO/IEC 25000**, asegurando que cada funcionalidad cumpla con los atributos de calidad de producto de software (SQuaRE).
 

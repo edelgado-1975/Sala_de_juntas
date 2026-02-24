@@ -220,10 +220,10 @@ Usa tags para versiones:
 
 ```powershell
 # Crear tag
-git tag -a v1.0.0 -m "Primera versión estable"
+git tag -a v1.1.0 -m "Primera versión estable"
 
 # Push de tags
-git push origin v1.0.0
+git push origin v1.1.0
 
 # Ver tags
 git tag

@@ -1,5 +1,5 @@
 # 🏗️ Manual de Arquitectura Técnica y Patrones de Diseño (ISO/IEC 25000)
-## Proyecto: Sistema de Agendamiento de Salas de Juntas - SENA v1.0.0
+## Proyecto: Sistema de Agendamiento de Salas de Juntas - SENA v1.1.0
 
 Este documento describe la arquitectura de software y los patrones de diseño aplicados para garantizar la **Mantenibilidad**, **Portabilidad** y **Eficiencia** del sistema.
 

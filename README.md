@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![Django](https://img.shields.io/badge/Django-5.0-green)
-![Status](https://img.shields.io/badge/Estado-v1.0.0-success)
+![Status](https://img.shields.io/badge/Estado-v1.1.0-success)
 ![SENA](https://img.shields.io/badge/SENA-Centro_de_la_Construcción-orange)
 
 Sistema web profesional para la gestión, reserva y administración de la Sal de Juntas del **SENA Centro de la Construcción** (Cali). Este sistema optimiza el uso de los espacios físicos mediante un calendario interactivo y reglas de negocio automatizadas.
@@ -84,4 +84,4 @@ Visita `http://localhost:8000` en tu navegador.
 
 ## 📄 Licencia
 Este proyecto es de uso exclusivo para el **SENA - Centro de la Construcción**.
-**Versión Actual**: v1.0.0
+**Versión Actual**: v1.1.0

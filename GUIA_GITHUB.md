@@ -1,4 +1,4 @@
-# Guía de Conexión a GitHub (v1.0.0)
+# Guía de Conexión a GitHub (v1.1.0)
 
 Esta guía explica cómo conectar tu proyecto "Sala de Juntas SENA" con un repositorio remoto en GitHub.
 

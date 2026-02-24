@@ -1,5 +1,5 @@
 # 🎓 Plan de Capacitación y Entrega Técnica (ISO/IEC 25000)
-## Proyecto: Sistema de Agendamiento de Salas de Juntas - SENA v1.0.0
+## Proyecto: Sistema de Agendamiento de Salas de Juntas - SENA v1.1.0
 
 Este documento define la estrategia pedagógica y técnica para la transferencia de conocimiento a los usuarios del sistema, garantizando la **Usabilidad** y **Operatividad** del software bajo los estándares de calidad ISO 25000.
 

@@ -1,5 +1,5 @@
 # 📊 Diccionario de Datos y Modelo Entidad-Relación (ISO/IEC 25000)
-## Proyecto: Sistema de Agendamiento de Salas de Juntas - SENA v1.0.0
+## Proyecto: Sistema de Agendamiento de Salas de Juntas - SENA v1.1.0
 
 Este documento proporciona una descripción técnica exhaustiva de la base de datos MySQL utilizada por el sistema, garantizando la **Integridad** y **Adecuación Funcional** del software.
 

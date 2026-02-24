@@ -1,5 +1,5 @@
 # 📖 Documentación de Calidad ISO/IEC 25000 (SQuaRE)
-## Proyecto: Sistema de Agendamiento de Salas de Juntas - SENA v1.0.0
+## Proyecto: Sistema de Agendamiento de Salas de Juntas - SENA v1.1.0
 
 Esta documentación detalla los atributos de calidad del software implementados bajo el estándar internacional **ISO/IEC 25000**, adaptado para el contexto del Centro de la Construcción de la ciudad de Cali.
 

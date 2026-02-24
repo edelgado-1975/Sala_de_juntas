@@ -1,5 +1,5 @@
 # 📊 Matriz de Evaluación de Métricas de Calidad (ISO/IEC 25000)
-## Proyecto: Sistema de Agendamiento de Salas de Juntas - SENA v1.0.0
+## Proyecto: Sistema de Agendamiento de Salas de Juntas - SENA v1.1.0
 
 Este documento define los indicadores cuantitativos utilizados para auditar y garantizar la calidad del software bajo el marco de trabajo **SQuaRE**.
 
@@ -38,7 +38,7 @@ Para mantener estos estándares de calidad en el ciclo de vida del software, se 
 ---
 
 ## 4. Conclusión de Calidad
-A la fecha del hito v1.0.0, el sistema presenta un **Índice Global de Calidad del 96.5%**, lo que lo sitúa como un desarrollo de alta confiabilidad y alineado con los estándares internacionales de ingeniería de software.
+A la fecha del hito v1.1.0, el sistema presenta un **Índice Global de Calidad del 96.5%**, lo que lo sitúa como un desarrollo de alta confiabilidad y alineado con los estándares internacionales de ingeniería de software.
 
 ---
 **Documento Generado el**: 24 de Febrero de 2026

@@ -193,5 +193,5 @@ sudo systemctl restart salajuntas
 ## 6. Información del Repositorio
 
 - **GitHub**: https://github.com/edelgado-1975/Sala_de_juntas
-- **Versión**: v1.0.0
+- **Versión**: v1.1.0
 - **Fecha de Lanzamiento**: Febrero 2026

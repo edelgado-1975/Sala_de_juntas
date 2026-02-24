@@ -2,7 +2,7 @@
 ## Sistema de Agendamiento de Salas de Juntas - SENA
 **Evaluación de Calidad de Producto de Software (SQuaRE)**
 
-La norma **ISO/IEC 25000** define un marco para evaluar la calidad del software. Basado en el estado actual del proyecto (v1.0.0), aquí se presentan recomendaciones clave para elevar el estándar del producto:
+La norma **ISO/IEC 25000** define un marco para evaluar la calidad del software. Basado en el estado actual del proyecto (v1.1.0), aquí se presentan recomendaciones clave para elevar el estándar del producto:
 
 ---
 

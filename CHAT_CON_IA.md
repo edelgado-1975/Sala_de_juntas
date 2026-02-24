@@ -56,7 +56,7 @@ Este documento es una copia fiel y literal de las interacciones entre el **Usuar
 
 ---
 
-## 📊 ESTADO TÉCNICO AL CIERRE (v1.0.0)
+## 📊 ESTADO TÉCNICO AL CIERRE (v1.1.0)
 - **Base de Datos**: MySQL (XAMPP) - Estable.
 - **Notificaciones**: Centralizadas en `Signals` - Verificado.
 - **Auditoría**: `CHAT_CON_IA.md` - Sincronizado.
