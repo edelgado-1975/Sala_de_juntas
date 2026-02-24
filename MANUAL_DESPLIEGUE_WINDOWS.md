@@ -9,8 +9,8 @@
 | Componente | Versión Recomendada | Descarga |
 |---|---|---|
 | Windows Server | 2019 / 2022 | — |
-| Python | 3.10 o superior | python.org |
-| MySQL | 8.0 | mysql.com |
+| Python | 3.12 o superior | python.org |
+| MySQL / MariaDB | 8.0 / 10.x | mysql.com |
 | Git | 2.x | git-scm.com |
 | waitress | (se instala con pip) | — |
 
@@ -86,6 +86,8 @@ EMAIL_USE_TLS=True
 EMAIL_HOST_USER=tu_correo@gmail.com
 EMAIL_HOST_PASSWORD=tu_contrasena_de_aplicacion
 DEFAULT_FROM_EMAIL=SENA Sala de Juntas <tu_correo@gmail.com>
+# Email que recibirá copia de todas las cancelaciones
+ADMIN_EMAIL=tu_correo_admin@gmail.com
 ```
 
 ---

@@ -16,11 +16,12 @@ Este sistema permite a los funcionarios y aprendices del SENA **reservar, gestio
 1. Abre tu navegador y ve a la dirección del sistema (ej: `http://localhost:8000`).
 2. Ingresa tu **correo electrónico** y **contraseña**.
 3. Haz clic en **Iniciar Sesión**.
+> **Nota de Seguridad**: Por tu protección, el sistema cerrará la sesión automáticamente tras **5 minutos (300 segundos)** de inactividad.
 
 ### 2.2 Registrarse (Nuevo Usuario)
 1. En la pantalla de login, haz clic en **Registrarse**.
 2. Completa el formulario con tus datos.
-3. Tu cuenta iniciará con rol de **Consulta** (solo lectura). Un administrador deberá habilitarte para crear reservas.
+3. Tu cuenta iniciará con rol de **Consulta** (solo lectura) y estado inactivo. Un administrador deberá habilitarte y asignarte el rol de **Operativo** para que puedas crear reservas.
 
 ### 2.3 Recuperar Contraseña
 1. Haz clic en **¿Olvidaste tu contraseña?** en la pantalla de login.
@@ -80,6 +81,8 @@ Este sistema permite a los funcionarios y aprendices del SENA **reservar, gestio
 2. En el modal de detalles, haz clic en **✏️ Editar**.
 3. Modifica los campos necesarios (incluyendo el **Estado** si deseas cancelarla).
 4. Haz clic en **Guardar Cambios**.
+
+> **🔔 Notificaciones**: Si cambias el estado a **CANCELADA**, el sistema enviará automáticamente un correo electrónico de notificación tanto a ti como al administrador del sistema para confirmar la liberación de la sala.
 
 > **Nota**: Solo puedes editar tus propias reservas. Los Super Usuarios pueden editar cualquiera.
 

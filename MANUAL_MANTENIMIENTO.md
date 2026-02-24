@@ -20,9 +20,9 @@ SalaJuntasCC/
 ```
 
 **Stack Tecnológico:**
-- **Backend**: Python 3.10+, Django 5.0
-- **Base de Datos**: MySQL 8.0
-- **Frontend**: Bootstrap 5, FullCalendar 6, JavaScript
+- **Backend**: Python 3.12+, Django 6.0
+- **Base de Datos**: MySQL 8.0 / MariaDB
+- **Frontend**: Bootstrap 5, FullCalendar 5+, JavaScript
 - **Control de Versiones**: Git + GitHub
 
 ---
@@ -57,6 +57,9 @@ pip freeze > requirements.txt
 
 ### 2.4 Rotación de Logs (Mensual)
 Los logs del servidor se acumulan en la carpeta de logs de Django. Revisar y archivar mensualmente.
+
+### 2.5 Revisión de Seguridad (Semanal)
+Desde el panel de administración, revisar el modelo **Logs de Seguridad** para identificar intentos fallidos de inicio de sesión o accesos denegados.
 
 ---
 
@@ -127,6 +130,7 @@ sudo systemctl restart gunicorn
 | El logo SENA no aparece | Archivos estáticos no servidos | Ejecutar `python manage.py collectstatic`. |
 | Error 500 en producción | Error interno del servidor | Revisar `DEBUG=False` y los logs de error de Django. |
 | Usuario no puede iniciar sesión | Contraseña incorrecta o cuenta inactiva | Verificar en el panel Admin que el usuario esté activo. |
+| No llegan los correos | Configuración SMTP o Deduplicación | Verificar que el email del usuario no sea el mismo del Admin en producción. Revisar logs de `signals.py`. |
 
 ---
 

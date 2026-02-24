@@ -57,7 +57,7 @@ En el cPanel busca **Aplicaciones de Python** (o "Setup Python App"):
 
 1. Haz clic en **Create Application**.
 2. Configura:
-   - **Python version**: 3.10 o superior
+   - **Python version**: 3.12 o superior
    - **Application root**: `public_html/salas`
    - **Application URL**: `salas.educaciondigitalsena.com.co`
    - **Application startup file**: `passenger_wsgi.py` (lo crearemos en el Paso 6)
@@ -140,6 +140,8 @@ EMAIL_USE_TLS=True
 EMAIL_HOST_USER=tu_correo@gmail.com
 EMAIL_HOST_PASSWORD=contraseña_de_aplicacion_gmail
 DEFAULT_FROM_EMAIL=SENA Sala de Juntas <tu_correo@gmail.com>
+# Email que recibirá copia de todas las cancelaciones
+ADMIN_EMAIL=tu_correo_admin@gmail.com
 ```
 
 ---

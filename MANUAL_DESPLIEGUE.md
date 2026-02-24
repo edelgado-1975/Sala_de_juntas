@@ -15,10 +15,10 @@
 ### Software Requerido
 | Software | Versión Mínima |
 |---|---|
-| Python | 3.10 |
-| MySQL | 8.0 |
+| Python | 3.12 |
+| MySQL / MariaDB | 8.0 / 10.x |
 | Git | 2.x |
-| pip | 23.x |
+| pip | 24.x |
 
 ---
 
@@ -102,6 +102,8 @@ DB_NAME=sala_juntas_db
 DB_USER=sena_user
 DB_PASSWORD=tu_contraseña_segura
 DB_HOST=localhost
+# Email que recibirá copia de todas las cancelaciones
+ADMIN_EMAIL=tu_correo_admin@gmail.com
 ```
 
 ### Paso 2: Instalar Gunicorn
