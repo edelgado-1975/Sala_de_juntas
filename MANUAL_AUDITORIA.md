@@ -56,7 +56,26 @@ Este documento define los protocolos oficiales para auditar la **Seguridad**, **
 
 ---
 
-## 4. Herramientas de Auditoría Incorporadas
+## 4. Herramienta de Apoyo: Script de Auditoría Automatizada (SENA-Audit)
+
+El sistema v1.1.0 incluye un script de apoyo que genera un informe detallado en segundos. Esta herramienta debe ser ejecutada por el Administrador antes de cada reunión de calidad.
+
+### 4.1 Ejecución del Script
+Abra una terminal en la raíz del proyecto y ejecute:
+```powershell
+python manage.py generar_auditoria
+```
+
+### 4.2 Resultados del Script
+El comando realizará las siguientes acciones:
+*   Genera un archivo Markdown con el nombre `auditoria_FECHA_HORA.md`.
+*   Analiza intentos de login fallidos de los últimos 7 días.
+*   Verifica la integridad de las reservas y detecta solapamientos accidentales.
+*   Resume el estado de las salas y usuarios activos.
+
+---
+
+## 5. Herramientas de Auditoría Incorporadas
 
 El sistema v1.1.0 incluye herramientas nativas para facilitar este proceso:
 *   **Logs de Django Signals**: Registro automático de toda acción de creación, edición o borrado.
